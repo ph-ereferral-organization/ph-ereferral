@@ -48,7 +48,9 @@
 
 ## Introduction
 
-The Philippine eReferral Implementation Guide (PH eReferral IG) is a **use case Implementation Guide** that provides a standardized approach for electronic referral workflows in the Philippines healthcare context. It defines the minimum FHIR-based requirements to support seamless referral of patients between healthcare providers using HL7<sup>&reg;</sup> FHIR<sup>&reg;&copy;</sup> standards.
+The Philippine eReferral Implementation Guide (PH eReferral IG) is a **use case Implementation Guide** that provides a standardized approach for electronic referral workflows within Health Care Provider Networks (HCPNs) in the Philippines. It defines the minimum FHIR-based requirements to support seamless referral of patients between healthcare providers using HL7<sup>&reg;</sup> FHIR<sup>&reg;&copy;</sup> standards.
+
+This IG aligns with the **Universal Health Care Act (Republic Act 11223)** and **DOH Administrative Order 2020-0019**, which mandates interoperable health information systems for integrated care across HCPNs. It enables FHIR-based referral messaging, patient navigation, and back-referral workflows consistent with the AO's Annex D requirements.
 
 This FHIR IG is provided for testing purposes and is not yet suitable for production systems.
 
@@ -67,12 +69,14 @@ PH eReferral demonstrates how FHIR resources can be applied to solve a real-worl
 
 The PH eReferral IG aims to:
 
-1. Enable standardized electronic referral workflows between healthcare facilities
-2. Support patient care continuity through interoperable data exchange
-3. Align with national health information exchange policies
-4. Provide clear, testable specifications for referral system implementers
+1. Enable standardized electronic referral workflows between healthcare facilities within HCPNs
+2. Support patient care continuity through interoperable FHIR-based data exchange
+3. Implement UHC Act (RA 11223) and DOH AO 2020-0019 requirements for referral systems
+4. Provide clear, testable specifications for HCPN referral system implementers
 
-This guide focuses on referral-specific FHIR resources (e.g., ServiceRequest, Task, Communication) and their relationships with core clinical and administrative resources (Patient, Practitioner, Organization, Encounter). It does not define general clinical workflows outside the referral context.
+This guide focuses on referral-specific FHIR resources (e.g., ServiceRequest, Task, Communication) and their relationships with core clinical and administrative resources (Patient, Practitioner, Organization, Encounter).
+
+It does not define general clinical workflows outside the referral context.
 
 ## Usage of this Guide
 
@@ -82,23 +86,23 @@ This guide focuses on referral-specific FHIR resources (e.g., ServiceRequest, Ta
 
 ## Relationship with Other IGs
 
-PH eReferral fits into the Philippine FHIR IG architecture as a **use case layer** implementation guide:
+PH eReferral fits into the Philippine FHIR IG architecture as a **use case layer** implementation guide that builds upon foundational profiles:
 
 | Layer | IG | Purpose |
 |-------|-----|---------|
-| Core | [PH Core IG](https://github.com/UP-Manila-SILab/ph-core) | Foundational rules, common extensions, and national identifiers |
-| **Use Case** | **PH eReferral IG** | **Referral-specific workflows and interactions** |
+| Core | [PH Core IG](https://github.com/UP-Manila-SILab/ph-core) | **Base profiles** – Foundational rules, common extensions, and national identifiers (Patient, Practitioner, Organization, Encounter, etc.) |
+| **Use Case** | **PH eReferral IG** | **Referral-specific workflows and interactions** – HCPN referral messaging built on PH Core |
 | Program | Program-specific IGs | Tailored implementations for specific health programs or facilities |
 
-As a use case IG, PH eReferral:
+PH Core provides the **parent/base profiles** used by this IG. PH eReferral:
 
-- Inherits constraints from PH Core (Patient, Practitioner, Organization, Encounter, and etc.)
-- Defines referral-specific profiles (ServiceRequest, Task, and etc.)
+- Uses PH Core as its foundation – inheriting constraints from PH Core profiles (Patient, Practitioner, Organization, Encounter, etc.)
+- Defines referral-specific profiles (ServiceRequest, Task, etc.) for interoperability
 - Specifies the referral workflow actors and their interactions
 - Documents the complete referral lifecycle from creation to fulfillment
 - Provides RESTful API guidance for referral operations
 
-This layered approach enables reuse of common definitions while addressing the specific needs of the referral workflow.
+This layered approach enables reuse of common PH Core definitions while addressing the specific needs of HCPN referral workflows mandated by the UHC Act.
 
 ## Dependencies
 
