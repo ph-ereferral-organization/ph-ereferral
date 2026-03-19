@@ -50,7 +50,7 @@
 
 The Philippine eReferral Implementation Guide (PH eReferral IG) is a **use case Implementation Guide** that provides a standardized approach for electronic referral workflows within Health Care Provider Networks (HCPNs) in the Philippines. It defines the minimum FHIR-based requirements to support seamless referral of patients between healthcare providers using HL7<sup>&reg;</sup> FHIR<sup>&reg;&copy;</sup> standards.
 
-This IG aligns with the **Universal Health Care Act (Republic Act 11223)** and **DOH Administrative Order 2020-0019**, which mandates interoperable health information systems for integrated care across HCPNs. It enables FHIR-based referral messaging, patient navigation, and back-referral workflows consistent with the AO's Annex D requirements.
+This IG aligns with the **[Universal Health Care Act (Republic Act 11223)](https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/86448)** and **[DOH Administrative Order 2020-0019](https://drive.google.com/file/d/1Uri9Iov3YPw3rc3AidV6dXjv8y_W7ydr/view)**, which mandates interoperable health information systems for integrated care across HCPNs. It enables FHIR-based referral messaging, patient navigation, and back-referral workflows consistent with the AO's Annex D requirements.
 
 This FHIR IG is provided for testing purposes and is not yet suitable for production systems.
 
@@ -71,7 +71,7 @@ The PH eReferral IG aims to:
 
 1. Enable standardized electronic referral workflows between healthcare facilities within HCPNs
 2. Support patient care continuity through interoperable FHIR-based data exchange
-3. Implement UHC Act (RA 11223) and DOH AO 2020-0019 requirements for referral systems
+3. Implement [UHC Act (RA 11223)](https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/86448) and [DOH AO 2020-0019](https://drive.google.com/file/d/1Uri9Iov3YPw3rc3AidV6dXjv8y_W7ydr/view) requirements for referral systems
 4. Provide clear, testable specifications for HCPN referral system implementers
 
 This guide focuses on referral-specific FHIR resources (e.g., ServiceRequest, Task, Communication) and their relationships with core clinical and administrative resources (Patient, Practitioner, Organization, Encounter).
@@ -102,7 +102,7 @@ PH Core provides the **parent/base profiles** used by this IG. PH eReferral:
 - Documents the complete referral lifecycle from creation to fulfillment
 - Provides RESTful API guidance for referral operations
 
-This layered approach enables reuse of common PH Core definitions while addressing the specific needs of HCPN referral workflows mandated by the UHC Act.
+This layered approach enables reuse of common PH Core definitions while addressing the specific needs of HCPN referral workflows mandated by the [UHC Act](https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/86448).
 
 ## Dependencies
 
