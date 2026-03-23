@@ -58,7 +58,7 @@ Description: "Example referring practitioner with role and organization"
 * active = true
 * practitioner = Reference(ExampleERefPractitioner)
 * organization = Reference(ExampleERefReferringFacility)
-* code = $v3-roleCode#CP "Consulting Physician"
+* code = $sct#158965000 "Medical practitioner"
 * specialty = $sct#419192003 "Internal medicine"
 * telecom.system = #phone
 * telecom.value = "+63 2 8123 4567"
@@ -103,7 +103,7 @@ Description: "Example tertiary hospital receiving facility"
 * identifier.system = "urn:oid:2.16.840.1.113883.2.9.4.1.1"
 * identifier.value = "HOSP-QC-001"
 * active = true
-* type = $organization-type#hospt "Hospital"
+* type = $organization-type#prov "Healthcare Provider"
 * name = "Philippine Heart Center"
 * address.line = "East Avenue"
 * address.city = "Quezon City"
