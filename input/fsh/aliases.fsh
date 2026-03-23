@@ -11,3 +11,7 @@ Alias: $observation-category = http://terminology.hl7.org/CodeSystem/observation
 Alias: $v3-ObservationInterpretation = http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation
 Alias: $allergyintolerance-clinical = http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical
 Alias: $v3-roleCode = http://terminology.hl7.org/CodeSystem/v3-RoleCode
+Alias: $sht = https://icd.who.int/browse10/2019/en#
+Alias: $request-priority = http://hl7.org/fhir/request-priority
+Alias: $servicerequest-status-reason = http://hl7.org/fhir/service-request-status-reason
+Alias: $organization-type = http://hl7.org/fhir/organization-type
