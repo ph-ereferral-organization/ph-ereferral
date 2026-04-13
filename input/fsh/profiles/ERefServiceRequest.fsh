@@ -3,11 +3,6 @@ Parent: ServiceRequest
 Id: ereferral-service-request
 Title: "EReferral ServiceRequest"
 Description: "Profile for ServiceRequest resource in the Philippine eReferral context. This profile defines the core referral request structure for referring patients between healthcare facilities."
-* ^status = #draft
-* ^version = "0.1.0"
-* ^publisher = "SILab CoP IG Accelerator (eReferral)"
-* ^jurisdiction = urn:iso:std:iso:3166#PH "Philippines"
-
 // Must Support Elements - arranged by TDG Row sequence (REF-1 to REF-21)
 
 // TDG Row REF-1: "Name of Referring Practitioner" -> ServiceRequest.requester via PractitionerRole -> Practitioner
