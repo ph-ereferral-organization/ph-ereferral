@@ -1,5 +1,5 @@
 Instance: ExampleERefPractitioner
-InstanceOf: Practitioner
+InstanceOf: PHCorePractitioner
 Usage: #example
 Title: "Example Referring Practitioner"
 Description: "Example referring practitioner"

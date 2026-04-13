@@ -1,5 +1,5 @@
 Instance: ExampleERefObservationBP
-InstanceOf: Observation
+InstanceOf: PHCoreObservation
 Usage: #example
 Title: "Example Blood Pressure Observation"
 Description: "Example vital signs for referral"

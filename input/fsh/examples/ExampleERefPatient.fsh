@@ -1,5 +1,5 @@
 Instance: ExampleERefPatient
-InstanceOf: Patient
+InstanceOf: PHCorePatient
 Usage: #example
 Title: "Example eReferral Patient"
 Description: "Example patient for eReferral demonstration"

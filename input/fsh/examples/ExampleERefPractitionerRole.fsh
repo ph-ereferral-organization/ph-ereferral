@@ -1,5 +1,5 @@
 Instance: ExampleERefPractitionerRole
-InstanceOf: PractitionerRole
+InstanceOf: PHCorePractitionerRole
 Usage: #example
 Title: "Example Referring Practitioner Role"
 Description: "Example referring practitioner with role and organization"

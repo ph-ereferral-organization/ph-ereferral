@@ -1,5 +1,5 @@
 Instance: ExampleERefObservationECG
-InstanceOf: Observation
+InstanceOf: PHCoreObservation
 Usage: #example
 Title: "Example ECG Observation"
 Description: "Example ECG findings for referral"

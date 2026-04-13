@@ -1,5 +1,5 @@
 Instance: ExampleERefConditionChestPain
-InstanceOf: Condition
+InstanceOf: PHCoreCondition
 Usage: #example
 Title: "Example Condition - Chest Pain"
 Description: "Example chest pain condition for referral"

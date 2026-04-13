@@ -1,5 +1,5 @@
 Instance: ExampleERefReceivingHospital
-InstanceOf: Organization
+InstanceOf: PHCoreOrganization
 Usage: #example
 Title: "Example Receiving Hospital"
 Description: "Example tertiary hospital receiving facility"

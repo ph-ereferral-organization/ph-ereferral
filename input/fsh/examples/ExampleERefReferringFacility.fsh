@@ -1,5 +1,5 @@
 Instance: ExampleERefReferringFacility
-InstanceOf: Organization
+InstanceOf: PHCoreOrganization
 Usage: #example
 Title: "Example Referring RHU"
 Description: "Example Rural Health Unit referring facility"
