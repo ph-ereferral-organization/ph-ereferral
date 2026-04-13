@@ -8,10 +8,10 @@ Title: "ERefPatient Example - Juan Dela Cruz"
 Description: "Example patient instance demonstrating the ERefPatient profile with PhilHealth ID, PhilSys ID, PWD registration, and complete demographic information for eReferral."
 
 // Patient identifiers (PHCorePhilHealthID, PHCorePhilSysID)
-* identifier[PHCorePhilHealthID].system = "https://philhealth.gov.ph/fhir/Identifier/philhealth-id"
+* identifier[PHCorePhilHealthID].system = $PhilHealthID
 * identifier[PHCorePhilHealthID].value = "63-584789845-5"
 
-* identifier[PHCorePhilSysID].system = "https://philsys.gov.ph/the-national-id/"
+* identifier[PHCorePhilSysID].system = $PhilSysID
 * identifier[PHCorePhilSysID].value = "1234-5678-9012-3456"
 
 // Patient name (REF-21)
