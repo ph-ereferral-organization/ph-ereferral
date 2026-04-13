@@ -5,7 +5,7 @@ Title: "EReferral ServiceRequest"
 Description: "Profile for ServiceRequest resource in the Philippine eReferral context. This profile defines the core referral request structure for referring patients between healthcare facilities."
 * ^status = #draft
 * ^version = "0.1.0"
-* ^publisher = "UP Manila SILab"
+* ^publisher = "SILab CoP IG Accelerator (eReferral)"
 * ^jurisdiction = urn:iso:std:iso:3166#PH "Philippines"
 
 // Must Support Elements - arranged by TDG Row sequence (REF-1 to REF-21)
@@ -17,7 +17,7 @@ Description: "Profile for ServiceRequest resource in the Philippine eReferral co
 // TDG Row REF-7: "Initiating Facility Address" -> ServiceRequest.requester (via PractitionerRole's Organization.address)
 // TDG Row REF-8: "Initiating Facility Contact Number" -> ServiceRequest.requester (via PractitionerRole's Organization.telecom)
 * requester 1..1 MS
-* requester only Reference(PractitionerRole)
+* requester only Reference(PHCorePractitionerRole)
   * ^short = "Referring practitioner"
   * ^definition = "The practitioner requesting the referral service. Uses PractitionerRole to capture both the practitioner and their facility/organization context."
 
@@ -31,7 +31,7 @@ Description: "Profile for ServiceRequest resource in the Philippine eReferral co
 // TDG Row REF-10: "Receiving Facility Name" -> ServiceRequest.performer -> PractitionerRole.organization.display
 // TDG Row REF-11: "Receiving Facility NHFR Code" -> ServiceRequest.performer -> PractitionerRole.organization.identifier
 * performer MS
-* performer only Reference(Organization or PractitionerRole)
+* performer only Reference(PHCoreOrganization or PHCorePractitionerRole)
   * ^short = "Receiving facility or practitioner"
   * ^definition = "The facility or practitioner expected to perform the service. For eReferral, this is typically the receiving healthcare facility."
 
@@ -47,6 +47,9 @@ Description: "Profile for ServiceRequest resource in the Philippine eReferral co
   * ^definition = "Categorizes the type of referral (e.g., consultation, procedure, diagnostic imaging, laboratory)."
 
 // TDG Row REF-14: "Referral Category" - Urgency/priority of the referral
+// Uses standard FHIR RequestPriority: routine | urgent | emergent | stat
+// NOTE: ASAP (as soon as possible) is not used in the Philippine eReferral context per TDG requirements.
+// TERMINOLOGY: for terminology validation
 * priority MS
 * priority from EReferralPriority (required)
   * ^short = "Urgency/priority of the referral"
@@ -67,7 +70,7 @@ Description: "Profile for ServiceRequest resource in the Philippine eReferral co
 // TDG Row REF-15: "Time Called" and other supporting clinical information
 // Clinical Summary elements: Conditions, Observations, Procedures, Medications, Immunizations
 * supportingInfo MS
-* supportingInfo only Reference(Condition or Observation or Procedure or MedicationAdministration or Immunization)
+* supportingInfo only Reference(PHCoreCondition or PHCoreObservation or PHCoreProcedure or PHCoreMedicationAdministration or PHCoreImmunization)
   * ^short = "Additional clinical information"
   * ^definition = "Additional clinical information relevant to the referral, such as relevant conditions, procedures, medications, immunizations, or observations."
 
@@ -75,6 +78,7 @@ Description: "Profile for ServiceRequest resource in the Philippine eReferral co
 * code MS
 
 // TDG Row REF-16: "Reason for Referral (service type)" - Clinical reason for the referral
+// TERMINOLOGY: for review
 * reasonCode MS
 * reasonCode from EReferralReason (example)
   * ^short = "Reason for referral"
@@ -82,13 +86,13 @@ Description: "Profile for ServiceRequest resource in the Philippine eReferral co
 
 // TDG Row REF-16: Supporting clinical information (conditions, observations)
 * reasonReference MS
-* reasonReference only Reference(Condition or Observation)
+* reasonReference only Reference(PHCoreCondition or PHCoreObservation)
   * ^short = "Conditions or observations supporting referral"
   * ^definition = "References to clinical conditions or observations that justify the need for the referral."
 
 // TDG Row REF-21: "Patient Full Name" (and related patient demographics)
 * subject MS
-* subject only Reference(Patient)
+* subject only Reference(PHCorePatient)
   * ^short = "Patient being referred"
   * ^definition = "The patient who is the subject of the referral request."
 
@@ -108,6 +112,7 @@ Description: "Profile for ServiceRequest resource in the Philippine eReferral co
   * ^definition = "A shared identifier common to all referral requests that were authorized more or less simultaneously. Used for grouping related referrals."
 
 // --- Invariants ---
+// TDG: for discussion
 * obeys ereferral-requester-has-role
 
 Invariant: ereferral-requester-has-role
