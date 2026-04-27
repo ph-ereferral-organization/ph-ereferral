@@ -75,5 +75,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./output
-          single_commit: true
+          force_orphan: true
           commit_message: "Deploy IG - ${{ github.sha }}"
