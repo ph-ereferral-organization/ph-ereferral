@@ -2,6 +2,8 @@
 # https://github.com/HL7/fhir-ips/blob/master/.github/workflows/validate-docs.yml
 # Original license: Apache 2.0 (per HL7 FHIR licensing)
 # Modified to follow linear build pattern from PH Core IG
+# Docker implementation inspired by:
+# https://www.argentixinfo.com/archives/156 (Automating Github FHIR IG Builds)
 
 name: Build PH eReferral FHIR IG
 
@@ -25,13 +27,11 @@ jobs:
         run: |
           echo "Checking branch name: $BRANCH_NAME"
 
-          # Check for forward slash
           if echo "$BRANCH_NAME" | grep -q '/'; then
             echo "::error::Branch name contains '/'. Use hyphens instead."
             exit 1
           fi
 
-          # Check for other invalid characters
           if echo "$BRANCH_NAME" | grep -qE '[\\~^:\[\] ]'; then
             echo "::error::Branch name contains invalid special characters."
             exit 1
@@ -57,16 +57,16 @@ jobs:
 
       - name: QA Gate
         run: |
-          if [ -f output/qa.json ]; then
-            ERRORS=$(jq -r '.errs // 0' output/qa.json)
-            if [ "$ERRORS" -gt 0 ]; then
-              echo "::error::QA errors found: $ERRORS"
-              exit 1
-            fi
-            echo "✅ QA passed: $ERRORS errors"
-          else
-            echo "::warning::No qa.json found"
+          if [ ! -f output/qa.json ]; then
+            echo "::error::No qa.json found in output/. Failing for safety."
+            exit 1
           fi
+          ERRORS=$(jq -r '.errs // 0' output/qa.json)
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "::error::QA errors found: $ERRORS"
+            exit 1
+          fi
+          echo "✅ QA passed: $ERRORS errors"
 
       - name: Deploy to GitHub Pages
         if: always() && github.event_name == 'push'
