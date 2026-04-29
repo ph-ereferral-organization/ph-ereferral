@@ -79,6 +79,10 @@ menu:
   Home: index.html
   Guidance:
     WHO SMART L1 Basis: who-smart-l1.html
+    v0.1 Connectathon Readiness: connectathon-readiness.html
+    v0.1 Scope and Release Notes: v01-scope.html
+    v0.1 Coverage Map: coverage-map.html
+    v0.1 Decision Log: decision-log.html
   Artifacts: artifacts.html
 
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮

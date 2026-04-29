@@ -56,6 +56,8 @@ This FHIR IG is provided for testing purposes and is not yet suitable for produc
 
 For the narrative and policy foundation of this implementation guide, see [WHO SMART Guidelines L1 Basis for the PH eReferral IG](who-smart-l1.html).
 
+For the minimum v0.1 testing path, build instructions, fixture pack, and release-readiness checklist, see [v0.1 Connectathon Quick-Start, Test Pack, and Release Readiness](connectathon-readiness.html).
+
 ## What is a Use Case IG?
 
 A use case Implementation Guide builds upon foundational and core standards to address a specific clinical or administrative workflow. Unlike base or core IGs that establish broad interoperability foundations, a use case IG:
