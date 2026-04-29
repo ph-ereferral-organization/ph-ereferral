@@ -34,9 +34,10 @@ Description: "Example chronic medication administration (antihypertensive) demon
 * note.text = "Patient's regular morning antihypertensive medication given before referral. Patient has been compliant with daily dosing."
 
 // === SUPPORTING RESOURCES (Self-Contained) ===
-// Note: ExampleERefPatient and ExampleERefPractitioner are defined in separate files:
+// Note: ExampleERefPatient, ExampleERefPractitioner, and ExampleERefEncounter are defined in separate files:
 // - input/fsh/examples/ExampleERefPatient.fsh
 // - input/fsh/examples/ExampleERefPractitioner.fsh
+// - input/fsh/examples/ExampleERefEncounter.fsh
 
 Instance: ExampleERefMedicationAntibiotic
 InstanceOf: PHCoreMedication
@@ -57,16 +58,3 @@ Description: "Example medication resource for Twinact (Telmisartan + Amlodipine)
 * code = $sct#105590001 "Substance"
 * code.text = "Twinact (Telmisartan 80mg + Amlodipine 5mg) - antihypertensive"
 * status = #active
-
-Instance: ExampleERefEncounter
-InstanceOf: PHCoreEncounter
-Usage: #example
-Title: "Example Referral Encounter"
-Description: "Example ambulatory encounter context for medication administration during the referral visit."
-
-* status = #finished
-* class = $v3-ActCode#AMB "ambulatory"
-* type = $sct#308335008 "Patient encounter procedure"
-* subject = Reference(ExampleERefPatient)
-* period.start = "2025-03-15T07:30:00+08:00"
-* period.end = "2025-03-15T09:30:00+08:00"
