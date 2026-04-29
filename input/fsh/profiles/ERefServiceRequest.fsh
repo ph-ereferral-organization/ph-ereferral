@@ -30,6 +30,12 @@ Description: "Profile for ServiceRequest resource in the Philippine eReferral co
   * ^short = "Receiving facility or practitioner"
   * ^definition = "The facility or practitioner expected to perform the service. For eReferral, this is typically the receiving healthcare facility."
 
+// Receiving-facility onward referral chain
+* replaces MS
+* replaces only Reference(ERefServiceRequest)
+  * ^short = "Prior referral request replaced by this request"
+  * ^definition = "When a receiving facility refers the case onward and a new ServiceRequest is created, this element links the onward request to the prior referral request."
+
 // TDG Row REF-13: "Date of Referral" - When the referral was authored
 * authoredOn MS
   * ^short = "When the referral was authored"
