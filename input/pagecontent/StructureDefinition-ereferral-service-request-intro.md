@@ -160,7 +160,7 @@ The profile includes the following validation rule:
 
 #### Referral Lifecycle
 
-The `ServiceRequest.status` element tracks the request lifecycle. Receiving-facility response states such as received, accepted, rejected, and referred onward are tracked on [EReferral Task](StructureDefinition-ereferral-task.html), using standard `Task.status` plus `Task.businessStatus` for the eReferral response term. See [Referral Workflow and Receiving-Facility Response](referral-workflow.html) for the v0.1 policy interpretation.
+The `ServiceRequest.status` element tracks the request lifecycle. Receiving-facility response states such as received, accepted, rejected, and referred onward are tracked on [EReferral Task](StructureDefinition-ereferral-task.html), using standard `Task.status` plus `Task.businessStatus` for the eReferral response term.
 
 | Status | Description |
 |--------|-------------|
