@@ -77,7 +77,7 @@ dependencies:
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 menu:
   Home: index.html
-  Guidelines:
+  Guidance:
     WHO SMART L1 Basis: who-smart-l1.html
   Artifacts: artifacts.html
 
