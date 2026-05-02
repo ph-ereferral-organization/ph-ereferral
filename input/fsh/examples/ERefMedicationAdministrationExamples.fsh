@@ -33,9 +33,8 @@ Description: "Example chronic medication administration (antihypertensive) demon
 * dosage.dose = 1 '{tablet}' "tablet"
 * note.text = "Patient's regular morning antihypertensive medication given before referral. Patient has been compliant with daily dosing."
 
-// === SUPPORTING RESOURCES ===
-// Note: ExampleERefPatient, ExampleERefPractitioner, and ExampleERefEncounter
-// are defined in separate files:
+// === SUPPORTING RESOURCES (Self-Contained) ===
+// Note: ExampleERefPatient, ExampleERefPractitioner, and ExampleERefEncounter are defined in separate files:
 // - input/fsh/examples/ExampleERefPatient.fsh
 // - input/fsh/examples/ExampleERefPractitioner.fsh
 // - input/fsh/examples/ExampleERefEncounter.fsh

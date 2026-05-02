@@ -131,6 +131,7 @@ The following elements are marked as **Must Support** and must be implemented by
 | `requester` | 1..1 | Referring practitioner (via PractitionerRole) |
 | `relevantHistory` | 0..* | Audit trail via Provenance |
 | `performer` | 0..* | Receiving facility or practitioner |
+| `replaces` | 0..* | Prior referral request replaced by an onward referral |
 | `authoredOn` | 0..1 | When the referral was created |
 | `category` | 0..* | Type of referral service |
 | `priority` | 0..1 | Urgency level |
@@ -159,7 +160,7 @@ The profile includes the following validation rule:
 
 #### Referral Lifecycle
 
-The `status` element tracks the referral through its lifecycle:
+The `ServiceRequest.status` element tracks the request lifecycle. Receiving-facility response states such as received, accepted, rejected, and referred onward are tracked on [EReferral Task](StructureDefinition-ereferral-task.html), using standard `Task.status` plus `Task.businessStatus` for the eReferral response term.
 
 | Status | Description |
 |--------|-------------|
@@ -228,6 +229,7 @@ The EReferral ServiceRequest typically works with:
 | [Organization](http://hl7.org/fhir/R4/organization.html) | `performer` | Receiving facility |
 | [Condition](http://hl7.org/fhir/R4/condition.html) | `reasonReference`, `supportingInfo` | Clinical diagnoses |
 | [Observation](http://hl7.org/fhir/R4/observation.html) | `supportingInfo` | Vital signs, lab results |
+| [Task](http://hl7.org/fhir/R4/task.html) | `Task.focus` | Workflow tracking and receiving-facility response |
 | [Provenance](http://hl7.org/fhir/R4/provenance.html) | `relevantHistory` | Audit trail and signatures |
 | [Encounter](http://hl7.org/fhir/R4/encounter.html) | Context | Often linked via Encounter context |
 

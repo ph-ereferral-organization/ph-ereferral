@@ -51,6 +51,23 @@ Description: "Task profile for Philippine eReferral workflow management. Tracks 
 * owner ^definition = "The practitioner, care navigator, or facility responsible for executing the referral task. TDG REF-9: 'Care Navigator' assignment."
 
 // -----------------------------------------------------------------------------
+// businessStatus: receiving-facility response terminology
+// Task.status carries the standard FHIR workflow state; businessStatus carries
+// the policy-facing response term used by implementers.
+// -----------------------------------------------------------------------------
+* businessStatus MS
+* businessStatus from EReferralReceivingResponse (extensible)
+* businessStatus ^short = "Receiving-facility response"
+* businessStatus ^definition = "The receiving facility response after referral receipt. Uses local eReferral terms for received, accepted, rejected, or referred onward while Task.status remains the standard FHIR Task lifecycle status."
+
+// -----------------------------------------------------------------------------
+// statusReason: reason or instruction attached to the response
+// -----------------------------------------------------------------------------
+* statusReason MS
+* statusReason ^short = "Reason for current workflow status"
+* statusReason ^definition = "Reason or instruction associated with the receiving facility response, such as capacity full or other instructions."
+
+// -----------------------------------------------------------------------------
 // authoredOn: PH Core has 0..1 (NOT MS), TDG requires 0..1 MS
 // Action: Add MS only (keep 0..1 cardinality)
 // -----------------------------------------------------------------------------
@@ -65,6 +82,15 @@ Description: "Task profile for Philippine eReferral workflow management. Tracks 
 * lastModified MS
 * lastModified ^short = "When task was last updated"
 * lastModified ^definition = "The date and time when the eReferral task was last modified."
+
+// -----------------------------------------------------------------------------
+// output: response artifacts, including onward referral details
+// -----------------------------------------------------------------------------
+* output MS
+* output ^short = "Receiving response output"
+* output ^definition = "Structured outputs from the receiving facility response. For referred-onward responses, this may identify that an onward referral request was created; the onward ServiceRequest should use ServiceRequest.replaces to link back to the prior request."
+* output.type MS
+* output.value[x] MS
 
 // =============================================================================
 // Elements INHERITED from PH Core (do not redeclare):
