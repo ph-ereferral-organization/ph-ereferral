@@ -3,13 +3,17 @@
 # Original license: Apache 2.0 (per HL7 FHIR licensing)
 # Modified to follow linear build pattern from PH Core IG
 
-name: Build PH eReferral FHIR IG
+name: CI Build & Validate IG
 
 on:
   pull_request:
     branches: [main]
   push:
     branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 
 permissions:
   contents: write
@@ -19,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Validate branch name
         env:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
@@ -39,21 +45,17 @@ jobs:
 
           echo "✅ Branch name validation passed"
 
-      - uses: actions/checkout@v4
+      - name: Update the image to the latest publisher
+        uses: docker://hl7fhir/ig-publisher-base:latest
+        with:
+          # Get the latest publisher - don't run the batch script but run the line directly
+          args: curl -L https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar -o ./input-cache/publisher.jar --create-dirs
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y graphviz
-          sudo gem install jekyll
-          sudo npm install -g fsh-sushi
-
-      - name: Build IG
-        run: |
-          chmod +x ./_updatePublisher.sh
-          ./_updatePublisher.sh -y
-          chmod +x ./_genonce.sh
-          ./_genonce.sh
+      - name: Run the IG publisher
+        uses: docker://hl7fhir/ig-publisher-base:latest
+        with:
+          # Run the publisher - don't run the batch script but run the line directly
+          args: java -jar ./input-cache/publisher.jar -ig .
 
       - name: QA Gate
         run: |
@@ -73,7 +75,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
           publish_dir: ./output
           force_orphan:  true
           commit_message: "Deploy IG - ${{ github.sha }}"
