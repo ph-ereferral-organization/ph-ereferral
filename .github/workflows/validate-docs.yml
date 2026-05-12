@@ -55,7 +55,7 @@ jobs:
         uses: docker://hl7fhir/ig-publisher-base:latest
         with:
           # Run the publisher - don't run the batch script but run the line directly
-          args: java -jar ./input-cache/publisher.jar -ig .
+          args: java -Xms19000m -Xmx19000m -jar ./input-cache/publisher.jar -ig . -tx http://tx.fhir.org
 
       - name: QA Gate
         run: |
