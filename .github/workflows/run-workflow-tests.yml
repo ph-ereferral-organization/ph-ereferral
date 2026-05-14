@@ -1,0 +1,109 @@
+name: Run Workflow End-to-End Tests
+
+on:
+  push:
+    branches:
+      - "80-workflow-state-machine"
+      - main
+  workflow_dispatch:
+
+jobs:
+  e2e-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Fail fast if generated TestScripts are missing — avoids a confusing Ant error later.
+      - name: Check that generated TestScripts exist
+        run: |
+          GENERATED_DIR="tests/generated/json"
+          if [ ! -d "$GENERATED_DIR" ]; then
+            echo "::error::Directory '$GENERATED_DIR' not found."
+            echo "::error::Run the 'Generate TestScripts from State Machine' workflow first,"
+            echo "::error::or run 'ant generate' locally and commit the results."
+            exit 1
+          fi
+          COUNT=$(find "$GENERATED_DIR" -maxdepth 1 -name "*.json" | wc -l)
+          if [ "$COUNT" -eq 0 ]; then
+            echo "::error::No TestScript JSON files found in '$GENERATED_DIR'."
+            echo "::error::Run the 'Generate TestScripts from State Machine' workflow first,"
+            echo "::error::or run 'ant generate' locally and commit the results."
+            exit 1
+          fi
+          echo "Found $COUNT TestScript(s) in $GENERATED_DIR — proceeding."
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Node.js (for SUSHI / fpl)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install SUSHI and fpl
+        run: |
+          npm install -g fsh-sushi fhir-package-loader
+
+      - name: Compile FSH sources with SUSHI
+        run: sushi .
+
+      - name: Set up Ant
+        # ubuntu-latest ships ant; this step makes the version explicit.
+        run: |
+          sudo apt-get install -y ant ant-optional
+          ant -version
+
+      # Download ant-contrib for <trycatch> and <for> support.
+      # The JAR is placed where Ant's default classpath can find it.
+      - name: Install ant-contrib
+        run: |
+          wget -q -O /tmp/ant-contrib.jar \
+            https://repo1.maven.org/maven2/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar
+          sudo cp /tmp/ant-contrib.jar /usr/share/java/ant-contrib.jar
+
+      # Download the fhir-frog fat JAR (ant target handles the skip-if-present logic,
+      # but we also cache it here for faster subsequent runs).
+      - name: Cache fhir-frog JAR
+        uses: actions/cache@v4
+        with:
+          path: ~/.fhir-frog/lib
+          key: fhir-frog-jar-${{ hashFiles('tests/build.properties') }}
+          restore-keys: fhir-frog-jar-
+
+      - name: Fetch fhir-frog JAR
+        working-directory: tests
+        run: ant fetch-jar
+
+      - name: Pre-populate FHIR package cache
+        working-directory: tests
+        run: ant cache-packages
+
+      - name: Bootstrap HAPI FHIR server
+        working-directory: tests
+        run: ant bootstrap
+
+      - name: Run end-to-end tests
+        working-directory: tests
+        run: ant test
+
+      - name: Upload JUnit XML test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-xml-results
+          path: tests/test-reports/xml/TEST-*.xml
+          if-no-files-found: warn
+
+      - name: Publish test results as GitHub check
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: "Workflow E2E Tests"
+          path: "tests/test-reports/xml/TEST-*.xml"
+          reporter: java-junit
+          fail-on-error: true

@@ -1,0 +1,23 @@
+{
+  "resourceType": "Patient",
+  "id": "ph-ereferral-patient-1",
+  "meta": {
+    "profile": [
+      "http://fhir.health.gov.ph/StructureDefinition/ph-core-patient"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "urn:oid:2.16.840.1.113883.2.9.4.3.2",
+      "value": "PH-123456789"
+    }
+  ],
+  "name": [
+    {
+      "family": "Dela Cruz",
+      "given": ["Juan", "Miguel"]
+    }
+  ],
+  "gender": "male",
+  "birthDate": "1965-07-20"
+}

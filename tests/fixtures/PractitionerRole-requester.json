@@ -1,0 +1,46 @@
+{
+  "resourceType": "PractitionerRole",
+  "id": "ph-ereferral-pr-requester",
+  "meta": {
+    "profile": [
+      "http://fhir.health.gov.ph/StructureDefinition/ph-core-practitioner-role"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "urn:oid:2.16.840.1.113883.2.9.4.3.3",
+      "value": "MD-98765"
+    }
+  ],
+  "active": true,
+  "practitioner": {
+    "reference": "Practitioner/ph-ereferral-practitioner-1",
+    "display": "Dr. Maria Santos"
+  },
+  "organization": {
+    "reference": "Organization/ph-ereferral-org-referring",
+    "display": "Manila General Hospital - Barangay 143 Health Center"
+  },
+  "code": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "158965000",
+          "display": "Medical practitioner"
+        }
+      ]
+    }
+  ],
+  "specialty": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "419192003",
+          "display": "Internal medicine"
+        }
+      ]
+    }
+  ]
+}

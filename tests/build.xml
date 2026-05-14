@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PH eReferral — End-to-End Test Harness (Ant)
+  =============================================
+  Prerequisites:
+    - ant 1.10+ with ant-contrib (for <trycatch>)
+    - docker with compose plugin
+    - java 21+
+    - npm + fpl  (npm install -g fhir-package-loader)
+    - fhir-frog Ant JAR  (run 'ant fetch-jar' to download automatically)
+    - fhir-frog-mbt JAR  (built locally via 'mvn install -pl fhir-frog-mbt -am -DskipTests')
+
+  Targets:
+    fetch-jar       — download the fhir-frog fat JAR from the release URL (skips if present)
+    cache-packages  — pre-populate ~/.fhir/packages via fpl
+    sushi           — compile FSH sources into fsh-generated/resources/
+    generate        — run TestScriptGenerator to produce TSH + JSON in tests/generated/
+    compile-tsh     — compile tests/generated/tsh/*.tsh -> tests/generated/json/*.json
+    init            — generate .fhir-frog/application.yaml and docker-compose.yml
+    bootstrap       — build the HAPI snapshot image (slow first run; idempotent)
+    test            — run all TestScripts in tests/generated/json/, generate HTML report (DEFAULT)
+    clean           — remove generated config files and test reports
+
+  Typical usage:
+    ant fetch-jar                # first-time setup: download fhir-frog JAR
+    ant cache-packages           # first-time setup: populate FHIR package cache
+    ant sushi                    # compile FSH sources
+    ant generate                 # generate TestScript files from state machine
+    ant                          # cache-packages -> sushi -> generate -> init -> bootstrap -> test
+    ant -Dimage.tag=myimg:1.0    # override image name
+-->
+<project name="ph-ereferral-tests" default="test" basedir=".">
+
+  <!-- Load defaults from build.properties; allow command-line overrides -->
+  <property file="build.properties"/>
+
+  <!-- IG root is one level above the tests/ directory -->
+  <property name="ig.root" value=".."/>
+
+  <!-- ============================================================
+       Ant-contrib: required for <trycatch>
+       ============================================================ -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+    <classpath>
+      <!-- ant-contrib is expected on the Ant classpath; if not, add it here -->
+      <!-- <pathelement location="/usr/share/java/ant-contrib.jar"/> -->
+    </classpath>
+  </taskdef>
+
+  <!-- ============================================================
+       fetch-jar — Download the fhir-frog fat JAR if not already present
+       ============================================================ -->
+  <target name="fetch-jar"
+          description="Download the fhir-frog fat JAR from ${fhir.frog.release.url} if not already present">
+    <available file="${fhir.frog.jar}" property="jar.already.present"/>
+    <antcall target="-do-fetch-jar"/>
+  </target>
+
+  <!-- Internal helper — only runs when jar.already.present is NOT set -->
+  <target name="-do-fetch-jar" unless="jar.already.present">
+    <dirname property="fhir.frog.jar.dir" file="${fhir.frog.jar}"/>
+    <mkdir dir="${fhir.frog.jar.dir}"/>
+    <echo message="Downloading fhir-frog JAR from ${fhir.frog.release.url}"/>
+    <get src="${fhir.frog.release.url}"
+         dest="${fhir.frog.jar}"
+         verbose="true"
+         usetimestamp="true"/>
+    <echo message="Saved to ${fhir.frog.jar}"/>
+  </target>
+
+  <!-- Internal — load fhir-frog Ant tasks; depends on fetch-jar so the JAR is present. -->
+  <target name="-load-tasks" depends="fetch-jar">
+    <taskdef resource="au/csiro/fhir/frog/ant/antlib.xml"
+             classpath="${fhir.frog.jar}"/>
+  </target>
+
+  <!-- ============================================================
+       cache-packages — Pre-populate ~/.fhir/packages via fpl
+       ============================================================ -->
+  <target name="cache-packages"
+          description="Pre-populate ~/.fhir/packages with all IG dependencies declared in sushi-config.yaml">
+    <exec executable="bash" failonerror="true" dir="${ig.root}">
+      <arg value="-c"/>
+      <!-- Inline equivalent of the erequesting cache-packages.sh, using the IG root sushi-config.yaml -->
+      <arg value="fpl install $(awk '/^dependencies:/{f=1;next} f &amp;&amp; /^[^ \t]/{f=0} f &amp;&amp; /^[ \t]+[a-zA-Z]/{n=$1;sub(/:$/,&quot;&quot;,n);v=$2;if(n!=&quot;&quot; &amp;&amp; v!=&quot;&quot;)print n&quot;#&quot;v}' sushi-config.yaml) 2&gt;&amp;1 || true"/>
+    </exec>
+  </target>
+
+  <!-- ============================================================
+       sushi — Compile FSH sources into fsh-generated/resources/
+       ============================================================ -->
+  <target name="sushi"
+          description="Run 'sushi .' in the IG root to compile FSH sources into fsh-generated/resources/">
+    <exec executable="sushi" failonerror="true" dir="${ig.root}">
+      <arg value="."/>
+    </exec>
+    <echo message="SUSHI compilation complete. Examples are in ${ig.root}/fsh-generated/resources/"/>
+  </target>
+
+  <!-- ============================================================
+       generate — Run TestScriptGenerator from fhir-frog-mbt
+       Produces: tests/generated/json/*.json and tests/generated/tsh/*.tsh
+       ============================================================ -->
+  <target name="generate"
+          description="Generate FHIR TestScript JSON and TSH files from the referral workflow state machine">
+    <!-- Verify the MBT JAR exists -->
+    <available file="${fhir.frog.mbt.jar}" property="mbt.jar.present"/>
+    <fail unless="mbt.jar.present"
+          message="fhir-frog-mbt JAR not found at ${fhir.frog.mbt.jar}.${line.separator}Build it with: mvn install -pl fhir-frog-mbt -am -DskipTests${line.separator}inside the fhir-frog repository."/>
+
+    <mkdir dir="${generated.json.dir}"/>
+    <mkdir dir="${generated.tsh.dir}"/>
+
+    <java classname="au.csiro.fhir.frog.mbt.TestScriptGenerator"
+          classpath="${fhir.frog.mbt.jar}"
+          fork="true"
+          failonerror="true">
+      <arg value="${generated.json.dir}/.."/>
+      <!-- TestScriptGenerator.main(args[0]) is the outputDir;
+           it writes json/ and tsh/ subdirs inside that dir. -->
+    </java>
+
+    <echo message="TestScripts written to ${generated.json.dir}/ and ${generated.tsh.dir}/"/>
+  </target>
+
+  <!-- ============================================================
+       compile-tsh — Compile TSH shorthand files to JSON TestScripts
+       Reads:  tests/generated/tsh/*.tsh
+       Writes: tests/generated/json/*.json  (alongside any already-generated JSON)
+       ============================================================ -->
+  <target name="compile-tsh"
+          description="Compile tests/generated/tsh/*.tsh files into JSON TestScripts via TSHProcessor">
+    <!-- Verify the fhir-frog JAR is present (TSHProcessor lives there) -->
+    <available file="${fhir.frog.jar}" property="frog.jar.for.tsh.present"/>
+    <fail unless="frog.jar.for.tsh.present"
+          message="fhir-frog JAR not found at ${fhir.frog.jar}. Run 'ant fetch-jar' first."/>
+
+    <mkdir dir="${generated.json.dir}"/>
+
+    <!-- Apply TSHProcessor to each .tsh file in the tsh/ directory -->
+    <!-- TODO: verify that TSHProcessor.main accepts (inputFile outputFile) or (inputDir outputDir) -->
+    <apply executable="java" failonerror="true" parallel="false">
+      <arg value="-cp"/>
+      <arg value="${fhir.frog.jar}"/>
+      <arg value="au.csiro.fhir.frog.shorthand.TSHProcessor"/>
+      <!-- source .tsh file (mapped srcfile) -->
+      <srcfile/>
+      <!-- target .json file in generated/json/, same basename -->
+      <mapper type="glob" from="*.tsh" to="${generated.json.dir}/*.json"/>
+      <targetfile/>
+      <fileset dir="${generated.tsh.dir}" includes="*.tsh"/>
+    </apply>
+
+    <echo message="TSH compilation complete. JSON files are in ${generated.json.dir}/"/>
+  </target>
+
+  <!-- ============================================================
+       init — Generate .fhir-frog/application.yaml and docker-compose.yml
+       ============================================================ -->
+  <target name="init" depends="-load-tasks,cache-packages"
+          description="Read sushi-config.yaml and generate HAPI configuration and Docker Compose file">
+    <fhirinit igConfig="${sushi.config}"
+              fhirVersion="R4"
+              outputDir=".fhir-frog"
+              imageTag="${image.tag}"/>
+    <echo message="Generated .fhir-frog/application.yaml and .fhir-frog/docker-compose.yml"/>
+
+    <!-- Patch application.yaml to enable expunge (required by the server-reset step) -->
+    <replaceregexp file=".fhir-frog/application.yaml"
+                   match="(hapi:\s*\n\s*fhir:)"
+                   replace="\1${line.separator}    expunge_enabled: true"
+                   flags="s">
+      <!-- TODO: verify that fhirinit emits a 'hapi.fhir:' block in application.yaml;
+           if the key is already present, this replace will add a duplicate — check and adjust. -->
+    </replaceregexp>
+  </target>
+
+  <!-- ============================================================
+       bootstrap — Commit a HAPI image with IGs pre-loaded
+       NOTE: First run takes ~20 minutes to download and load all packages.
+             Subsequent runs are instant (skipped if image already exists).
+       ============================================================ -->
+  <target name="bootstrap" depends="init"
+          description="Start HAPI via Docker Compose (bootstrap profile), wait for readiness, commit image, tear down">
+    <fhirbootstrap imageTag="${image.tag}"
+                   composeFile="${compose.file}"
+                   containerName="fhir-frog-hapi-bootstrap"/>
+  </target>
+
+  <!-- ============================================================
+       test — Run all TestScripts and generate HTML report
+       ============================================================ -->
+  <target name="test" depends="bootstrap"
+          description="Start the test container, run all TestScripts in generated/json/, generate HTML report, stop container">
+
+    <!-- Fail fast if no TestScript JSON files have been generated yet -->
+    <fileset id="testscript.files" dir="${generated.json.dir}" includes="*.json" erroronmissingdir="false"/>
+    <condition property="testscripts.missing">
+      <resourcecount refid="testscript.files" when="equal" count="0"/>
+    </condition>
+    <fail if="testscripts.missing"
+          message="No TestScript JSON files found in ${generated.json.dir}/.${line.separator}Run 'ant generate' first to generate TestScripts from the state machine."/>
+
+    <!-- Create output directories -->
+    <mkdir dir="${junit.xml.dir}"/>
+    <mkdir dir="${report.dir}"/>
+
+    <!-- Start the test profile -->
+    <exec executable="docker" failonerror="true">
+      <arg value="compose"/>
+      <arg value="-f"/>
+      <arg value="${compose.file}"/>
+      <arg value="--profile"/>
+      <arg value="test"/>
+      <arg value="up"/>
+      <arg value="--wait"/>
+      <arg value="-d"/>
+    </exec>
+
+    <trycatch>
+      <try>
+        <sequential>
+          <!-- Iterate over every *.json in generated/json/ and run each as a TestScript.
+               Between tests, reset server state via HAPI's $expunge operation. -->
+          <for param="testscript.file">
+            <path>
+              <fileset dir="${generated.json.dir}" includes="*.json"/>
+            </path>
+            <sequential>
+              <!-- Run the TestScript -->
+              <fhirtest testScript="@{testscript.file}"
+                        serverUrl="${server.url}"
+                        fixturesPath="${fixtures.dir}"
+                        reportDir="test-reports"
+                        junitXmlDir="${junit.xml.dir}"/>
+
+              <!-- Reset server state: expunge all resources between tests.
+                   HAPI must have expunge_enabled: true (patched into application.yaml by the init target). -->
+              <exec executable="curl" failonerror="false">
+                <arg value="-s"/>
+                <arg value="-X"/>
+                <arg value="POST"/>
+                <arg value="${server.url}/$expunge"/>
+                <arg value="-H"/>
+                <arg value="Content-Type: application/fhir+json"/>
+                <arg value="-d"/>
+                <arg value='{"resourceType":"Parameters","parameter":[{"name":"expungeEverything","valueBoolean":true}]}'/>
+              </exec>
+            </sequential>
+          </for>
+        </sequential>
+      </try>
+      <finally>
+        <!-- Always stop the test containers, even on test failure -->
+        <exec executable="docker" failonerror="false">
+          <arg value="compose"/>
+          <arg value="-f"/>
+          <arg value="${compose.file}"/>
+          <arg value="--profile"/>
+          <arg value="test"/>
+          <arg value="down"/>
+        </exec>
+      </finally>
+    </trycatch>
+
+    <!-- Generate HTML report from Surefire XML -->
+    <junitreport todir="${report.dir}">
+      <fileset dir="${junit.xml.dir}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${report.dir}"/>
+    </junitreport>
+
+    <echo message="HTML report: ${report.dir}/index.html"/>
+  </target>
+
+  <!-- ============================================================
+       clean — Remove generated files (not the Docker image)
+       ============================================================ -->
+  <target name="clean"
+          description="Remove generated config files, test reports, and generated TestScripts">
+    <delete dir=".fhir-frog"/>
+    <delete dir="test-reports"/>
+    <delete dir="${generated.json.dir}"/>
+    <delete dir="${generated.tsh.dir}"/>
+  </target>
+
+</project>

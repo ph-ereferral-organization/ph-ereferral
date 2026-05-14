@@ -1,0 +1,34 @@
+{
+  "resourceType": "Organization",
+  "id": "ph-ereferral-org-referring",
+  "meta": {
+    "profile": [
+      "http://fhir.health.gov.ph/StructureDefinition/ph-core-organization"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "https://nhfr.doh.gov.ph/facility",
+      "value": "DOH000000000001234"
+    }
+  ],
+  "active": true,
+  "name": "Manila General Hospital - Barangay 143 Health Center",
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+63 2 8123 4567",
+      "use": "work"
+    }
+  ],
+  "address": [
+    {
+      "use": "work",
+      "line": ["123 Rizal Avenue"],
+      "city": "Manila",
+      "state": "Metro Manila",
+      "postalCode": "1000",
+      "country": "PH"
+    }
+  ]
+}

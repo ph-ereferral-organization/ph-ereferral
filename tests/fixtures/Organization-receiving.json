@@ -1,0 +1,37 @@
+{
+  "resourceType": "Organization",
+  "id": "ph-ereferral-org-receiving",
+  "meta": {
+    "profile": [
+      "http://fhir.health.gov.ph/StructureDefinition/ph-core-organization"
+    ]
+  },
+  "identifier": [
+    {
+      "system": "http://fhir.nhdr.gov.ph/nhfr/hospcode",
+      "value": "DOH789012"
+    }
+  ],
+  "active": true,
+  "type": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        }
+      ]
+    }
+  ],
+  "name": "Philippine Heart Center",
+  "address": [
+    {
+      "line": ["East Avenue"],
+      "city": "Quezon City",
+      "state": "Metro Manila",
+      "postalCode": "1100",
+      "country": "PH"
+    }
+  ]
+}

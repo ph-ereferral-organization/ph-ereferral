@@ -1,0 +1,91 @@
+name: Generate TestScripts from State Machine
+
+# Manual trigger only — run this when the state machine YAML changes.
+# The generated files are committed back to the branch so that the
+# run-workflow-tests workflow can consume them without needing the MBT build.
+on:
+  workflow_dispatch:
+    inputs:
+      state_machine_path:
+        description: "Path to the state machine YAML (relative to repo root)"
+        required: false
+        default: "tests/state-model/referral-workflow-state-machine.yaml"
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history so we can commit back
+          fetch-depth: 0
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      # Cache the local Maven repository to speed up repeated runs.
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-fhir-frog-mbt-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-fhir-frog-mbt-
+            ${{ runner.os }}-maven-
+
+      # Clone the fhir-frog monorepo and build the MBT module.
+      # We use a shallow clone to keep CI fast; the MBT module is self-contained.
+      - name: Clone fhir-frog repository
+        run: |
+          git clone --depth 1 https://gitlab.com/australian-e-health-research-centre/fhir-frog.git /tmp/fhir-frog
+
+      - name: Build fhir-frog-mbt
+        working-directory: /tmp/fhir-frog
+        run: |
+          mvn install -pl fhir-frog-mbt -am -DskipTests --batch-mode --no-transfer-progress
+
+      # Resolve the JAR path from the local Maven repo (version is from the fhir-frog POM).
+      - name: Resolve fhir-frog-mbt JAR path
+        id: mbt-jar
+        run: |
+          # Find the built JAR in the local Maven repo
+          JAR=$(find ~/.m2/repository/au/csiro/fhir/fhir-frog-mbt -name "*.jar" \
+                ! -name "*sources*" ! -name "*javadoc*" | sort | tail -1)
+          if [ -z "$JAR" ]; then
+            echo "::error::fhir-frog-mbt JAR not found in ~/.m2/repository after build."
+            exit 1
+          fi
+          echo "jar=$JAR" >> "$GITHUB_OUTPUT"
+          echo "Resolved MBT JAR: $JAR"
+
+      - name: Generate TestScripts
+        run: |
+          mkdir -p tests/generated/json tests/generated/tsh
+          java -cp "${{ steps.mbt-jar.outputs.jar }}" \
+               au.csiro.fhir.frog.mbt.TestScriptGenerator \
+               tests/generated
+
+      - name: List generated files
+        run: |
+          echo "--- JSON ---"
+          ls -1 tests/generated/json/ || echo "(none)"
+          echo "--- TSH ---"
+          ls -1 tests/generated/tsh/ || echo "(none)"
+
+      # Commit and push generated files only if they changed.
+      - name: Commit generated TestScripts
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tests/generated/json/ tests/generated/tsh/
+          if git diff --cached --quiet; then
+            echo "No changes to generated TestScripts — nothing to commit."
+          else
+            git commit -m "chore(tests): regenerate TestScripts from state machine [skip ci]"
+            git push
+          fi
