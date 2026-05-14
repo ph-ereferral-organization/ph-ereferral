@@ -1,0 +1,402 @@
+# PH eReferral v0.1 — Referral Workflow State Machine
+#
+# Machine-readable state model derived from the minimum viable workflow diagram
+# (input/images/minimum-viable-workflow.png) and the workflow narrative
+# (input/pagecontent/referral-workflow.md) introduced in PR #83.
+#
+# Intended use: fhir-frog (https://gitlab.com/australian-e-health-research-centre/fhir-frog)
+# test generation. Each state defines the FHIR element assertions that a TestScript
+# must verify after a transition occurs. Each transition defines the FHIR operation
+# that drives the change.
+#
+# See tests/state-model/referral-workflow-state-machine.puml for a visual rendering.
+
+id: ph-ereferral-v01-workflow
+version: "0.1"
+title: "PH eReferral v0.1 Referral Workflow State Machine"
+description: >
+  State machine for the minimum viable referral workflow. Three swim-lane actors
+  (Initiator, Receiving Service, Recipient) interact through FHIR ServiceRequest
+  and Task resources. States are expressed as observable FHIR element values so
+  that each state can be verified by a FHIR TestScript assertion.
+canonical: "urn://example.com/ph-ereferral/fhir"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# FHIR resources tracked by this state machine
+# ──────────────────────────────────────────────────────────────────────────────
+resources:
+  service_request:
+    type: ServiceRequest
+    profile: "urn://example.com/ph-ereferral/fhir/StructureDefinition/ereferral-service-request"
+    description: "Carries the referral request: patient, requester, receiving facility, clinical reason."
+
+  task:
+    type: Task
+    profile: "urn://example.com/ph-ereferral/fhir/StructureDefinition/ereferral-task"
+    description: "Tracks workflow state. Task.focus references the ServiceRequest."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Terminology
+# ──────────────────────────────────────────────────────────────────────────────
+terminology:
+  ereferral_workflow_cs:
+    system: "urn://example.com/ph-ereferral/fhir/CodeSystem/ereferral-workflow"
+    codes:
+      received:      "Receiving facility acknowledged receipt; reviewing whether it can take the case."
+      accepted:      "Receiving facility can take the case."
+      rejected:      "Receiving facility cannot take the case; no onward facility identified."
+      referred_onward: "Receiving facility cannot take the case; directs to another facility."
+      capacity_full: "Receiving facility reports capacity is full (used as statusReason)."
+      onward_referral_request: "A new ServiceRequest created as the onward referral."
+      consultation_summary:    "Summary of the referral service outcome."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# States
+# Each state is observable from FHIR resource element values.
+# 'fhir.assertions' lists the FHIRPath expression / expected-value pairs a
+# TestScript should assert after entering this state.
+# ──────────────────────────────────────────────────────────────────────────────
+states:
+
+  draft:
+    label: "Draft / Prepared Referral"
+    description: >
+      Referral is being prepared by the initiating facility and has not yet been
+      sent to a receiving service.
+    lane: initiator
+    terminal: false
+    fhir:
+      assertions:
+        - resource: service_request
+          expression: "ServiceRequest.status"
+          value: "draft"
+        - resource: task
+          expression: "Task.status"
+          value: "draft"
+          optional: true   # Task may not exist yet at draft stage
+
+  requested:
+    label: "Active / Sent Referral"
+    description: >
+      Referral request has been sent; a Task has been created to track the
+      workflow. This is the entry point for the receiving service.
+    lane: initiator
+    terminal: false
+    fhir:
+      assertions:
+        - resource: service_request
+          expression: "ServiceRequest.status"
+          value: "active"
+        - resource: service_request
+          expression: "ServiceRequest.intent"
+          value: "order"
+        - resource: task
+          expression: "Task.status"
+          value: "requested"
+        - resource: task
+          expression: "Task.focus.resolve().resourceType"
+          value: "ServiceRequest"
+          description: "Task.focus must reference the active ServiceRequest."
+
+  received:
+    label: "Received / Under Review"
+    description: >
+      Receiving facility has registered or logged the referral and is evaluating
+      whether it can take the case.
+    lane: receiving_service
+    terminal: false
+    fhir:
+      assertions:
+        - resource: service_request
+          expression: "ServiceRequest.status"
+          value: "active"
+        - resource: task
+          expression: "Task.status"
+          value: "received"
+        - resource: task
+          expression: "Task.businessStatus.coding.where(system = 'urn://example.com/ph-ereferral/fhir/CodeSystem/ereferral-workflow').code"
+          value: "received"
+
+  accepted:
+    label: "Accepted"
+    description: >
+      Receiving facility can take the case. Routed for clinical triage or review
+      by the recipient.
+    lane: receiving_service
+    terminal: false
+    fhir:
+      assertions:
+        - resource: service_request
+          expression: "ServiceRequest.status"
+          value: "active"
+        - resource: task
+          expression: "Task.status"
+          value: "accepted"
+        - resource: task
+          expression: "Task.businessStatus.coding.where(system = 'urn://example.com/ph-ereferral/fhir/CodeSystem/ereferral-workflow').code"
+          value: "accepted"
+
+  rejected:
+    label: "Rejected"
+    description: >
+      Receiving facility cannot take the case and no onward facility is
+      identified in the same response.
+    lane: receiving_service
+    terminal: false
+    fhir:
+      assertions:
+        - resource: task
+          expression: "Task.status"
+          value: "rejected"
+        - resource: task
+          expression: "Task.businessStatus.coding.where(system = 'urn://example.com/ph-ereferral/fhir/CodeSystem/ereferral-workflow').code"
+          value: "rejected"
+        - resource: task
+          expression: "Task.statusReason.exists()"
+          value: "true"
+          description: "statusReason should explain why no onward facility was identified."
+
+  referred_onward:
+    label: "Referred Onward"
+    description: >
+      Receiving facility cannot take the case (capacity full or otherwise) and
+      identifies another facility. An onward ServiceRequest is created or
+      referenced in Task.output.
+    lane: receiving_service
+    terminal: false
+    fhir:
+      assertions:
+        - resource: task
+          expression: "Task.status"
+          value: "rejected"
+        - resource: task
+          expression: "Task.businessStatus.coding.where(system = 'urn://example.com/ph-ereferral/fhir/CodeSystem/ereferral-workflow').code"
+          value: "referred-onward"
+        - resource: task
+          expression: "Task.statusReason.coding.where(system = 'urn://example.com/ph-ereferral/fhir/CodeSystem/ereferral-workflow').code"
+          value: "capacity-full"
+        - resource: task
+          expression: "Task.output.where(type.coding.code = 'onward-referral-request').exists()"
+          value: "true"
+          description: "Task.output must identify the onward referral ServiceRequest."
+
+  completed:
+    label: "Completed / Closed"
+    description: >
+      Referral workflow outcome is known. No further v0.1 workflow action is
+      expected. Closure evidence is present on the Task.
+    lane: recipient
+    terminal: true
+    fhir:
+      assertions:
+        - resource: task
+          expression: "Task.status"
+          value: "completed"
+        - resource: task
+          expression: "Task.executionPeriod.end.exists()"
+          value: "true"
+          description: "executionPeriod.end must be present to indicate closure."
+        - resource: task
+          expression: "Task.output.exists()"
+          value: "true"
+          description: "Task.output must carry the closure summary."
+
+  end_no_referral:
+    label: "End — No Referral Required"
+    description: >
+      Referral criteria were not satisfied. The clinical encounter ends without
+      creating any eReferral FHIR resources.
+    lane: initiator
+    terminal: true
+    fhir:
+      assertions: []   # No FHIR referral resources are created in this path.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Transitions
+# Each transition names the FHIR operation (type + resource) that drives the
+# state change. 'assertions' on a transition are checked immediately after the
+# operation completes, before the target state is considered entered.
+# ──────────────────────────────────────────────────────────────────────────────
+transitions:
+
+  - id: no_criteria
+    from: ~            # initial pseudo-state (no FHIR resource yet)
+    to: end_no_referral
+    trigger: "Referral criteria not satisfied during patient assessment"
+    actor: initiator
+    fhir_operation: ~  # No FHIR operation; workflow ends without resources.
+
+  - id: create_draft
+    from: ~            # initial pseudo-state
+    to: draft
+    trigger: "Initiator begins preparing the referral request"
+    actor: initiator
+    fhir_operation:
+      type: create
+      resource: service_request
+      description: "POST ServiceRequest with status=draft."
+
+  - id: send_referral
+    from: draft
+    to: requested
+    trigger: "Initiator finalises and sends the referral to the receiving facility"
+    actor: initiator
+    fhir_operation:
+      type: create
+      resource: task
+      description: >
+        POST Task with status=requested, focus referencing the ServiceRequest,
+        and requester identifying the initiating side.
+        Optionally PUT ServiceRequest to status=active at the same time.
+
+  - id: receive_referral
+    from: requested
+    to: received
+    trigger: "Receiving service registers or logs the referral"
+    actor: receiving_service
+    fhir_operation:
+      type: update
+      resource: task
+      description: >
+        PUT Task setting status=received and
+        businessStatus=EReferralWorkflowCS#received.
+        Task.owner should identify the receiving facility.
+
+  - id: accept_referral
+    from: received
+    to: accepted
+    trigger: "Receiving service accepts the referral"
+    actor: receiving_service
+    fhir_operation:
+      type: update
+      resource: task
+      description: >
+        PUT Task setting status=accepted and
+        businessStatus=EReferralWorkflowCS#accepted.
+
+  - id: reject_referral
+    from: received
+    to: rejected
+    trigger: "Receiving service rejects the referral with no onward facility"
+    actor: receiving_service
+    fhir_operation:
+      type: update
+      resource: task
+      description: >
+        PUT Task setting status=rejected,
+        businessStatus=EReferralWorkflowCS#rejected, and
+        statusReason explaining the rejection.
+
+  - id: refer_onward
+    from: received
+    to: referred_onward
+    trigger: "Receiving service redirects the referral to another facility"
+    actor: receiving_service
+    fhir_operation:
+      type: update
+      resource: task
+      description: >
+        PUT Task setting status=rejected,
+        businessStatus=EReferralWorkflowCS#referred-onward,
+        statusReason=EReferralWorkflowCS#capacity-full, and
+        output identifying the onward ServiceRequest.
+
+  - id: complete_accepted
+    from: accepted
+    to: completed
+    trigger: "Referral workflow outcome resolved after clinical review"
+    actor: recipient
+    fhir_operation:
+      type: update
+      resource: task
+      description: >
+        PUT Task setting status=completed,
+        executionPeriod.end (timestamp), and
+        output carrying the consultation summary.
+
+  - id: complete_rejected
+    from: rejected
+    to: completed
+    trigger: "Initiating side closes the workflow after rejection"
+    actor: initiator
+    fhir_operation:
+      type: update
+      resource: task
+      description: >
+        PUT Task setting status=completed and executionPeriod.end.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Paths
+# Named sequences of states for test scenario generation.
+# 'transitions' lists the transition IDs in execution order.
+# ──────────────────────────────────────────────────────────────────────────────
+paths:
+
+  happy_path:
+    id: happy_path
+    name: "Accepted referral — happy path"
+    description: >
+      The minimum viable accepted referral flow: draft → sent → received →
+      accepted → completed. This is the primary v0.1 connectathon test path.
+    states:
+      - draft
+      - requested
+      - received
+      - accepted
+      - completed
+    transitions:
+      - create_draft
+      - send_referral
+      - receive_referral
+      - accept_referral
+      - complete_accepted
+
+  rejection_path:
+    id: rejection_path
+    name: "Rejected referral"
+    description: >
+      Receiving facility rejects with no onward facility identified.
+    states:
+      - draft
+      - requested
+      - received
+      - rejected
+      - completed
+    transitions:
+      - create_draft
+      - send_referral
+      - receive_referral
+      - reject_referral
+      - complete_rejected
+
+  onward_path:
+    id: onward_path
+    name: "Referred onward (capacity full)"
+    description: >
+      Receiving facility cannot take the case and identifies an onward facility.
+      Completion depends on the onward referral workflow, which is not fully
+      defined in v0.1.
+    states:
+      - draft
+      - requested
+      - received
+      - referred_onward
+    transitions:
+      - create_draft
+      - send_referral
+      - receive_referral
+      - refer_onward
+    notes: >
+      The referred-onward path ends without a completed state because the
+      downstream onward referral is a new workflow instance not modelled here.
+
+  no_criteria_path:
+    id: no_criteria_path
+    name: "No referral required"
+    description: >
+      Patient assessed; referral criteria not met; workflow ends without any
+      eReferral FHIR resources being created.
+    states:
+      - end_no_referral
+    transitions:
+      - no_criteria

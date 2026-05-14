@@ -1,0 +1,98 @@
+@startuml ph-ereferral-v01-workflow
+' PH eReferral v0.1 — Referral Workflow State Machine
+' Generated from: tests/state-model/referral-workflow-state-machine.yaml
+' Diagram source for: input/images/minimum-viable-workflow.png (PR #83)
+
+skinparam defaultFontName Helvetica
+skinparam state {
+  BackgroundColor<<initiator>>  #FFF3B0
+  BorderColor<<initiator>>      #C8A800
+  BackgroundColor<<receiving>>  #FFD5A8
+  BorderColor<<receiving>>      #C06000
+  BackgroundColor<<recipient>>  #B8E0F7
+  BorderColor<<recipient>>      #2080B0
+  BackgroundColor<<terminal>>   #E0E0E0
+  BorderColor<<terminal>>       #808080
+}
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 11
+
+title PH eReferral v0.1 — Referral Workflow State Machine\n<size:10>(ServiceRequest + Task FHIR state transitions)</size>
+
+' ── Initial split ─────────────────────────────────────────────────────────────
+[*] --> assess : Patient arrives
+
+state "Initiator" as initiator_zone {
+
+  state assess <<initiator>> : **Assess Patient Condition**\n──\n<i>No FHIR resource yet</i>
+
+  state assess_decision <<choice>>
+
+  state Draft <<initiator>> : **Draft / Prepared Referral**\n──\nSR.status = <b>draft</b>\nTask.status = draft <i>(optional)</i>
+
+  state Requested <<initiator>> : **Active / Sent Referral**\n──\nSR.status = <b>active</b>\nSR.intent = order\nTask.status = <b>requested</b>\nTask.focus → ServiceRequest
+
+  state EndNoCriteria <<terminal>> : **End — No Referral**\n──\n<i>Criteria not met;\nno FHIR resources created</i>
+
+}
+
+state "Receiving Service" as receiving_zone {
+
+  state Received <<receiving>> : **Received / Under Review**\n──\nTask.status = <b>received</b>\nTask.businessStatus = #received\nTask.owner = receiving facility
+
+  state decision <<choice>>
+
+  state Accepted <<receiving>> : **Accepted**\n──\nTask.status = <b>accepted</b>\nTask.businessStatus = #accepted
+
+  state Rejected <<receiving>> : **Rejected**\n──\nTask.status = <b>rejected</b>\nTask.businessStatus = #rejected\nTask.statusReason (required)
+
+  state ReferredOnward <<receiving>> : **Referred Onward**\n──\nTask.status = <b>rejected</b>\nTask.businessStatus = #referred-onward\nTask.statusReason = #capacity-full\nTask.output → onward SR
+
+}
+
+state "Recipient" as recipient_zone {
+
+  state Completed <<recipient>> : **Completed / Closed**\n──\nTask.status = <b>completed</b>\nTask.executionPeriod.end (required)\nTask.output (required)
+
+}
+
+' ── Transitions ───────────────────────────────────────────────────────────────
+
+assess --> assess_decision
+
+assess_decision --> EndNoCriteria  : [criteria NOT met]
+assess_decision --> Draft          : [criteria met]\ncreate SR (status=draft)
+
+Draft      --> Requested      : <b>send_referral</b>\ncreate Task (status=requested)
+
+Requested  --> Received       : <b>receive_referral</b>\nupdate Task → status=received\nbusinessStatus=#received
+
+Received   --> decision
+
+decision   --> Accepted       : [Accept]\n<b>accept_referral</b>\nupdate Task → status=accepted\nbusinessStatus=#accepted
+
+decision   --> Rejected       : [Reject]\n<b>reject_referral</b>\nupdate Task → status=rejected\nbusinessStatus=#rejected
+
+decision   --> ReferredOnward : [Refer Onward]\n<b>refer_onward</b>\nupdate Task → status=rejected\nbusinessStatus=#referred-onward
+
+Accepted   --> Completed      : <b>complete_accepted</b>\nupdate Task → status=completed\n+ executionPeriod.end + output
+
+Rejected   --> Completed      : <b>complete_rejected</b>\nupdate Task → status=completed\n+ executionPeriod.end
+
+Completed  --> [*]
+EndNoCriteria --> [*]
+
+' ── Legend ────────────────────────────────────────────────────────────────────
+legend right
+  |= Swim lane |= Actor |
+  |<back:#FFF3B0>  Initiator  </back>| Referring facility |
+  |<back:#FFD5A8>  Receiving Service  </back>| Receiving facility |
+  |<back:#B8E0F7>  Recipient  </back>| Receiving clinician / team |
+  |<back:#E0E0E0>  Terminal  </back>| End state (no further action) |
+  ----
+  SR = ServiceRequest
+  Task.focus references SR throughout
+  businessStatus bound to EReferralWorkflowCS
+endlegend
+
+@enduml
