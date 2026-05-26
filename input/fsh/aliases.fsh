@@ -25,9 +25,10 @@ Alias: $signature-type = urn:iso-astm:E1762-95:2013
 // Obligation extension
 Alias: $obligation = http://hl7.org/fhir/StructureDefinition/obligation
 
-// PH eReferral ActorDefinitions for obligations
+// PH Core ActorDefinitions for obligations (reused from PH Core IG dependency)
 // Using lowercase aliases with $ prefix (like EU EPS) for concise RuleSet usage
 // These resolve to full canonical URLs required by the obligation extension
-Alias: $server = http://doh.gov.ph/fhir/ph-ereferral/ActorDefinition/Server
-Alias: $consumer = http://doh.gov.ph/fhir/ph-ereferral/ActorDefinition/Consumer
-Alias: $creator = http://doh.gov.ph/fhir/ph-ereferral/ActorDefinition/Creator
+// PH eReferral depends on fhir.ph.core, so these ActorDefinitions are available
+Alias: $server = https://fhir.doh.gov.ph/phcore/ActorDefinition/Server
+Alias: $consumer = https://fhir.doh.gov.ph/phcore/ActorDefinition/Consumer
+Alias: $creator = https://fhir.doh.gov.ph/phcore/ActorDefinition/Creator
