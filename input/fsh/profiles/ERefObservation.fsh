@@ -52,11 +52,15 @@ ServiceRequest.reasonReference."
 // TDG Row REF-33 to REF-38: eReferral requires at least one category 
 // for clinical context classification (vital-signs, laboratory, survey, procedure)
 * category MS
+* insert ObligationOptional
+
 // * category ObligationOptional
 
 // TDG Row REF-31, REF-33-38: Subject required for all clinical observations
 // Constrained to ERefPatient for eReferral context (not Group, Device, or Location)
 * subject MS
+* insert ObligationOptional
+
 // * subject ObligationOptional
 * subject only Reference(ERefPatient)
 
