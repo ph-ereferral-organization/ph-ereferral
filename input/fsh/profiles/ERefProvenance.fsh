@@ -12,6 +12,8 @@ Description: "Profile for tracking audit trail of eReferral actions including si
 
 // Must Support and cardinality for professional signature (REF-4)
 * signature MS
+* insert ObligationOptional
+
 * signature.type 1..*
 * signature.when 1..1
 * signature.who 1..1

@@ -16,17 +16,25 @@ Description: "Profile for medications administered to patients in the Philippine
 
 // Must Support elements for eReferral clinical context
 * status 1..1 MS
+* insert ObligationRequired
+
 * status ^short = "Medication administration status"
 * status ^definition = "The status of the medication administration. Tracks whether the medication was completed, in-progress, or not administered."
 
 * medication[x] 1..1 MS
+* insert ObligationRequired
+
 * medication[x] ^short = "Medication administered"
 * medication[x] ^definition = "The medication that was administered to the patient. Can be a reference to a Medication resource or a coded concept."
 
 * subject 1..1 MS
+* insert ObligationRequired
+
 * subject ^short = "Patient receiving medication"
 * subject ^definition = "The patient who received the medication. Constrained to PHCorePatient."
 
 * effective[x] 1..1 MS
+* insert ObligationRequired
+
 * effective[x] ^short = "When medication was administered"
 * effective[x] ^definition = "The date/time or period when the medication administration occurred."

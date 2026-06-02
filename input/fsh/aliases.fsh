@@ -23,3 +23,14 @@ Alias: $servicerequest-status-reason = http://hl7.org/fhir/service-request-statu
 Alias: $organization-type = http://terminology.hl7.org/CodeSystem/organization-type
 Alias: $provenance-participant-type = http://terminology.hl7.org/CodeSystem/provenance-participant-type
 Alias: $signature-type = urn:iso-astm:E1762-95:2013
+
+// Obligation extension
+Alias: $obligation = http://hl7.org/fhir/StructureDefinition/obligation
+
+// PH Core ActorDefinitions for obligations (reused from PH Core IG dependency)
+// Using lowercase aliases with $ prefix (like EU EPS) for concise RuleSet usage
+// These resolve to full canonical URLs required by the obligation extension
+// PH eReferral depends on fhir.ph.core, so these ActorDefinitions are available
+Alias: $server = https://fhir.doh.gov.ph/phcore/ActorDefinition/Server
+Alias: $consumer = https://fhir.doh.gov.ph/phcore/ActorDefinition/Consumer
+Alias: $creator = https://fhir.doh.gov.ph/phcore/ActorDefinition/Creator

@@ -34,3 +34,20 @@ Description: "Clinical reasons for eReferral requests. Uses SNOMED CT clinical f
 * $sct#59621000 "Essential hypertension"
 * $sct#73211009 "Diabetes mellitus"
 * $sct#109006 "Anxiety disorder"
+
+ValueSet: EReferralRelationshipType
+Id: ereferral-relationship-type
+Title: "eReferral Relationship Type"
+Description: "Relationship roles used for patient contacts, next of kin, emergency contacts, guardians, and accompanying persons in Philippine eReferral."
+* ^experimental = true
+* ^status = #draft
+* $v3-roleCode#NOK "next of kin"
+* $v3-roleCode#ECON "emergency contact"
+* $v3-roleCode#GUARD "guardian"
+* $v3-roleCode#FAMMEMB "family member"
+* $v3-roleCode#PRN "parent"
+* $v3-roleCode#FTH "father"
+* $v3-roleCode#MTH "mother"
+* $v3-roleCode#SPS "spouse"
+* $v3-roleCode#CHILD "child"
+* $v3-roleCode#FRND "unrelated friend"
