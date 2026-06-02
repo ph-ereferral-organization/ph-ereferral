@@ -1,19 +1,33 @@
 # This CI/CD workflow was derived from the HL7 FHIR IPS project:
 # https://github.com/HL7/fhir-ips/blob/master/.github/workflows/validate-docs.yml
 # Original license: Apache 2.0 (per HL7 FHIR licensing)
+# Modified to follow linear build pattern from PH Core IG
 
-name: Validate docs
+name: CI Build & Validate IG
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    types: [opened, synchronize] # This will trigger the workflow only when a PR is opened or updated with new commits
+    branches: [main]
+  push:
+    branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+permissions:
+  contents: write
 
 jobs:
-  validate-branch-name:
+  build:
     runs-on: ubuntu-latest
+
     steps:
+      - uses: actions/checkout@v4
+        with:
+          # Checkout the PR branch tip as-is, not a simulated merge commit
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
       - name: Validate branch name
         env:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
@@ -34,38 +48,42 @@ jobs:
 
           echo "✅ Branch name validation passed"
 
-  sushi:
-    needs: validate-branch-name
-    runs-on: ubuntu-latest
+      - name: Update the image to the latest publisher
+        uses: docker://hl7fhir/ig-publisher-base:latest
+        with:
+          # Get the latest publisher - don't run the batch script but run the line directly
+          args: curl -L https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar -o ./input-cache/publisher.jar --create-dirs
 
-    steps:
-      - uses: actions/checkout@v3
+      - name: Run the IG publisher
+        uses: docker://hl7fhir/ig-publisher-base:latest
+        with:
+          # Clean up cached PH Core packages to force refresh, then run the publisher
+          args: bash -c "rm -rf ~/.fhir/packages/fhir.ph.core#* && java -Xms19000m -Xmx19000m -jar ./input-cache/publisher.jar -ig . -tx http://tx.fhir.org"
 
-      - name: Install Sushi
-        run: sudo npm install -g fsh-sushi
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ig-output
+          path: ./output
 
-      - name: Validate with Sushi
-        run: sushi .
-
-  ig-publisher:
-    needs: validate-branch-name
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install Jekyll
-        run: sudo gem install jekyll
-
-      - name: Install Sushi
-        run: sudo npm install -g fsh-sushi
-
-      - name: Install IG publisher
+      - name: QA Gate
         run: |
-          chmod +x ./_updatePublisher.sh
-          ./_updatePublisher.sh -y
+          if [ -f output/qa.json ]; then
+            ERRORS=$(jq -r '.errs // 0' output/qa.json)
+            if [ "$ERRORS" -gt 0 ]; then
+              echo "::error::QA errors found: $ERRORS"
+              exit 1
+            fi
+            echo "✅ QA passed: $ERRORS errors"
+          else
+            echo "::warning::No qa.json found"
+          fi
 
-      - name: Validate IG
-        run: |
-          chmod +x ./_genonce.sh
-          ./_genonce.sh
+      - name: Deploy to GitHub Pages
+        if: always() && github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
+          force_orphan:  true
+          commit_message: "Deploy IG - ${{ github.sha }}"
