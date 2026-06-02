@@ -5,9 +5,9 @@ Title: "Example eReferral Service Request"
 Description: "An example referral request from a rural health unit to a tertiary hospital for cardiology consultation."
 * status = #active
 * intent = #order
-* category = $sct#103695009 "Referral to specialist"
+* category = $sct#3457005 "Patient referral"
 * priority = #urgent
-* code = $sct#183519001 "Referral to cardiology service"
+* code = $sct#183519002 "Referral to cardiology service"
 * subject = Reference(ExampleERefPatient)
 * authoredOn = "2025-03-15T09:30:00+08:00"
 * requester = Reference(ExampleERefPractitionerRole)

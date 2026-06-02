@@ -4,7 +4,7 @@ Usage: #example
 Title: "Example Condition - Chest Pain"
 Description: "Example chest pain condition for referral"
 * clinicalStatus = $condition-clinical#active
-* verificationStatus = $sct#provisional "Provisional"
+* verificationStatus = $condition-ver-status#provisional "Provisional"
 * category = $sct#439401001 "Diagnosis"
 * severity = $sct#24484000 "Severe"
 * code = $sct#29857009 "Chest pain"
