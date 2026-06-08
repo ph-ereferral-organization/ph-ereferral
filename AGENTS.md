@@ -41,7 +41,7 @@
 - **Source**: FSH definitions, narrative content, and configuration in `input/`
 - **Generated**: SUSHI output, final IG documentation, and temporary build products
 - **Publisher**: HL7 FHIR IG Publisher (Java-based)
-- **Canonical base**: `urn://example.com/ph-ereferral/fhir`
+- **Canonical base**: `https://fhir.doh.gov.ph/pheref`
 - **Dependencies**: `fhir.ph.core` (Philippines Core Implementation Guide)
 
 ## Code Style & Conventions
