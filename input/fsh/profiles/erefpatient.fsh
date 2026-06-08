@@ -5,7 +5,7 @@ Profile: ERefPatient
 Parent: PHCorePatient
 Id: ereferral-patient
 Title: "ERefPatient"
-Description: "Patient profile for the Philippine eReferral system. Extends PHCorePatient with additional elements specific to referral workflows, including PWD (Person with Disability) registration information. This profile supports the patient demographic requirements defined in the eReferral TDG (Technical Development Group) mapping, elements REF-21 through REF-30."
+Description: "Patient profile for the Philippine eReferral system. Extends PHCorePatient with additional elements specific to referral workflows. This profile supports the patient demographic requirements defined in the eReferral TDG (Technical Development Group) mapping, elements REF-21 through REF-30."
 
 * ^status = #draft
 * ^experimental = true
@@ -22,13 +22,7 @@ Description: "Patient profile for the Philippine eReferral system. Extends PHCor
 // - extension: nationality, religion, indigenousGroup, indigenousPeople, occupation, race, educationalAttainment
 
 // eReferral-specific extensions
-* extension contains
-    PWDDisabilityExtension named disabilityRegistration 0..1 MS
-* insert ObligationOptional
-
-* extension[disabilityRegistration] ^short = "PWD Registration Information"
-* extension[disabilityRegistration] ^definition = "Person With Disability (PWD) registration information including PWD ID number, type of disability, and ID expiration date. (REF-30)"
-* extension[disabilityRegistration] ^mustSupport = true
+// PWD disability registration is inherited from PHCorePatient via ph-core-pwd-disability extension
 
 // Contact information for Next of Kin (REF-29)
 // Using existing Patient.contact element with specific constraints for eReferral
@@ -79,9 +73,3 @@ Invariant: ereferral-patient-1
 Description: "If contact is provided, either name or telecom must be present."
 Severity: #error
 Expression: "contact.exists() implies contact.all(name.exists() or telecom.exists())"
-
-// Invariant: PWD ID should have expiration date if provided
-Invariant: ereferral-patient-2
-Description: "If PWD registration is provided with an ID, expiration date should also be provided."
-Severity: #warning
-Expression: "extension('urn://example.com/ph-ereferral/fhir/StructureDefinition/ereferral-pwd-disability').extension('pwdId').exists() implies extension('urn://example.com/ph-ereferral/fhir/StructureDefinition/ereferral-pwd-disability').extension('idExpirationDate').exists()"
