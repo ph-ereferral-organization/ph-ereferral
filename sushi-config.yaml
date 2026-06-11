@@ -79,12 +79,15 @@ menu:
   Home: index.html
   Guidance:
     WHO SMART L1 Basis: who-smart-l1.html
-    v0.1 Referral Workflow: referral-workflow.html
-    v0.1 Connectathon Readiness: connectathon-readiness.html
-    v0.1 Scope and Release Notes: v01-scope.html
-    v0.1 Coverage Map: coverage-map.html
-    v0.1 Decision Log: decision-log.html
+    Referral Workflow: referral-workflow.html
+    Connectathon Readiness: connectathon-readiness.html
+    Scope and Release Notes: v01-scope.html
+    Coverage Map: coverage-map.html
+    Decision Log: decision-log.html
   Artifacts: artifacts.html
+  References:
+    Documents: references.html
+    Data Dictionary: data-dictionary.html
 
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
 # │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │
