@@ -58,6 +58,22 @@ python input/generate_references.py
   - Ubuntu/Debian: `sudo apt-get install poppler-utils`
 - Idempotent — safe to re-run; cleans orphaned PNGs if page counts change.
 
+### Table Styling Convention
+
+All markdown tables in narrative pages must be wrapped in `<div class="ph-table" markdown="1">` to receive consistent styling from `input/includes/fragment-css.html`:
+
+```markdown
+<div class="ph-table" markdown="1">
+
+| Header | Header |
+|--------|--------|
+| Cell   | Cell   |
+
+</div>
+```
+
+This ensures tables receive the `.ph-table` CSS (light headers, borders, zebra striping) without affecting generated artifacts pages like `artifacts.html` or `index.html`.
+
 ## Architecture
 
 - **Type**: FHIR R4 Implementation Guide using SUSHI/FSH

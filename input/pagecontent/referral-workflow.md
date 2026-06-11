@@ -46,6 +46,8 @@ The diagram uses the lanes `Initiator`, `Receiving Service`, and `Recipient`. Th
 
 The minimum v0.1 workflow involves the following actors and systems.
 
+<div class="ph-table" markdown="1">
+
 | Actor or system | Minimum v0.1 role |
 | --- | --- |
 | Referring facility / initiating facility | Assesses the patient, creates the referral request, and sends it to a receiving facility or service. |
@@ -55,7 +57,11 @@ The minimum v0.1 workflow involves the following actors and systems.
 | Care navigator | May be assigned to coordinate the referral when the local workflow includes this role. In the system this may be represented by linking the navigator to the service request or the task, depending on the implementation pattern. |
 | Referral management system / FHIR server / exchange layer | Stores, exchanges, and updates the electronic records used to represent the referral request and workflow state. |
 
+</div>
+
 ## Minimum Workflow Steps
+
+<div class="ph-table" markdown="1">
 
 | Step | Workflow activity | FHIR traceability |
 | --- | --- | --- |
@@ -69,6 +75,8 @@ The minimum v0.1 workflow involves the following actors and systems.
 | 8 | Receiving service records the receiving-facility decision or outcome. | Record the receiving-facility outcome using the v0.1 receiving-response terminology: `received`, `accepted`, `rejected`, or `referred-onward`. Non-response is not represented in the current v0.1 examples. |
 | 9 | If the referral can proceed, route for clinical triage or review by the recipient and send updates to the sender. | The task record may be used to show who is assigned, when it was last updated, notes, and resulting information. |
 | 10 | Next steps after the referral decision are outside the v0.1 minimum path unless explicitly included in a test scenario. | Close the workflow when the referral outcome is known. In the current examples, closure is demonstrated by marking the task as completed, recording the end time, and capturing the resulting information. |
+
+</div>
 
 ## Known Limitations
 

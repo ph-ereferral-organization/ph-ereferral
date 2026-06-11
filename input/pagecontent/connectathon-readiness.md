@@ -4,6 +4,8 @@ This page gives implementers and reviewers a minimum, repeatable path for testin
 
 ## v0.1 Quick-Start
 
+<div class="ph-table" markdown="1">
+
 | Item | v0.1 expectation |
 |------|------------------|
 | Purpose | Validate the minimum PH eReferral workflow using the IG profiles and examples. |
@@ -13,6 +15,8 @@ This page gives implementers and reviewers a minimum, repeatable path for testin
 | Required dependency | PH Core package `fhir.ph.core` as configured in `sushi-config.yaml`. |
 | Current continuous build | [PH eReferral continuous build](https://build.fhir.org/ig/ph-ereferral-organization/ph-ereferral/). Treat this as a CI build, not a tagged release. |
 | Release tag | No versioned release tag is available yet. Use the [repository tags page](https://github.com/ph-ereferral-organization/ph-ereferral/tags) once issue [#73](https://github.com/ph-ereferral-organization/ph-ereferral/issues/73) is resolved. |
+
+</div>
 
 Minimum implementer setup:
 
@@ -77,6 +81,8 @@ Known build limitations:
 
 Use this as the connectathon smoke test from a clean checkout with the listed fixtures. The expected result is a traceable referral request that moves from creation, to receiving-facility response, to closure.
 
+<div class="ph-table" markdown="1">
+
 | Step | Action | Fixture or artifact | Expected result |
 |------|--------|---------------------|-----------------|
 | 1 | Create referral | [Example eReferral ServiceRequest](ServiceRequest-ExampleERefServiceRequest.html) | A referral request exists with `status = active`, `intent = order`, an urgent priority, a patient subject, a requester, a receiving facility, clinical reason, and supporting observations. |
@@ -84,6 +90,8 @@ Use this as the connectathon smoke test from a clean checkout with the listed fi
 | 3 | Receive referral | [Example eReferral Task - Accepted State](Task-ExampleERefTaskAccepted.html) | The receiving facility has accepted ownership of the referral Task and `owner` is populated. |
 | 4 | Respond with receiving-facility outcome | [Example eReferral Task - Accepted State](Task-ExampleERefTaskAccepted.html) | For the current v0.1 minimum fixture, the positive receiving response is represented by `Task.status = accepted`. Richer response-state semantics are pending review in issue [#47](https://github.com/ph-ereferral-organization/ph-ereferral/issues/47) and PR [#84](https://github.com/ph-ereferral-organization/ph-ereferral/pull/84). |
 | 5 | Close referral | [Example eReferral Task - Completed State](Task-ExampleERefTaskCompleted.html) and [Example eReferral Encounter](Encounter-ExampleERefEncounter.html) | The Task is completed, completion output is present, and the receiving encounter documents the completed referral encounter. |
+
+</div>
 
 Pass criteria for the by-hand test:
 
@@ -103,6 +111,8 @@ Fail criteria:
 
 Required fixtures for the minimum test:
 
+<div class="ph-table" markdown="1">
+
 | Fixture | Link | Test role |
 |---------|------|-----------|
 | Referral request | [Example eReferral ServiceRequest](ServiceRequest-ExampleERefServiceRequest.html) | Primary referral order under test. |
@@ -119,7 +129,11 @@ Required fixtures for the minimum test:
 | Completed Task | [Example eReferral Task - Completed State](Task-ExampleERefTaskCompleted.html) | Closed referral state. |
 | Receiving encounter | [Example eReferral Encounter](Encounter-ExampleERefEncounter.html) | Completed referral encounter context. |
 
+</div>
+
 Optional fixtures:
+
+<div class="ph-table" markdown="1">
 
 | Fixture | Link | Optional use |
 |---------|------|--------------|
@@ -128,6 +142,8 @@ Optional fixtures:
 | Medication administration | [Example Chronic Medication Administration](MedicationAdministration-ExampleERefMedicationAdministrationChronic.html) | Clinical summary support. |
 | Antibiotic administration | [Example Antibiotic Administration](MedicationAdministration-ExampleERefMedicationAdministrationAntibiotic.html) | Treatment-given support. |
 | Immunization | [ERefImmunization Example - Routine Immunization](Immunization-ExampleERefImmunizationRoutine.html) | Immunization support. |
+
+</div>
 
 ## Automated or Semi-Automated Testing
 
@@ -149,6 +165,8 @@ For v0.1, passing the automated build does not replace the by-hand test. It only
 
 Record one row per connectathon run, release candidate, or reviewer verification.
 
+<div class="ph-table" markdown="1">
+
 | Evidence field | Value to record |
 |----------------|-----------------|
 | What was tested | Minimum create, send, receive, respond, and close referral path using the fixtures listed above. |
@@ -158,6 +176,8 @@ Record one row per connectathon run, release candidate, or reviewer verification
 | Build result | SUSHI result, Publisher result, and QA summary. |
 | By-hand test result | Pass, fail, or pass with limitations. |
 | Known unresolved issues | Links to unresolved issues that affect interpretation of the result. |
+
+</div>
 
 Current v0.1 readiness status:
 
