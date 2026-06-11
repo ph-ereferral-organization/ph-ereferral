@@ -46,6 +46,23 @@ def generate_table() -> str:
     # Skip the header description row (row 1, where Element ID is empty)
     data_rows = rows[2:]
 
+    # Map headers to CSS classes for styling
+    def header_to_class(h: str) -> str:
+        class_map = {
+            "Description/Definition": "col-description",
+            "CDG Comments": "col-comments",
+            "[FINAL] FHIR Element (R4)": "col-fhir-element",
+            "Linked By": "col-linked-by",
+            "Value Set": "col-value-set",
+            "TDG Comments": "col-tdg-comments",
+            "Workflow Task": "col-workflow",
+            "Element ID": "col-element-id",
+            "Required?": "col-required",
+        }
+        return class_map.get(h, "")
+
+    header_classes = [header_to_class(h) for h in headers]
+
     # Build HTML
     lines = [
         '<div class="table-responsive data-dictionary-wrapper">',
@@ -53,8 +70,9 @@ def generate_table() -> str:
         '    <thead class="thead-dark">',
         '      <tr>',
     ]
-    for h in headers:
-        lines.append(f"        <th>{escape_html(h)}</th>")
+    for h, cls in zip(headers, header_classes):
+        class_attr = f' class="{cls}"' if cls else ""
+        lines.append(f"        <th{class_attr}>{escape_html(h)}</th>")
     lines.extend([
         '      </tr>',
         '    </thead>',
@@ -68,11 +86,12 @@ def generate_table() -> str:
             cells.append("")
 
         lines.append('      <tr>')
-        for cell in cells:
+        for cell, cls in zip(cells, header_classes):
             cell_html = escape_html(cell)
             if not cell_html:
                 cell_html = "&nbsp;"
-            lines.append(f"        <td>{cell_html}</td>")
+            class_attr = f' class="{cls}"' if cls else ""
+            lines.append(f"        <td{class_attr}>{cell_html}</td>")
         lines.append('      </tr>')
 
     lines.extend([

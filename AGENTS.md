@@ -33,6 +33,31 @@
 - macOS/Linux: `./_build.sh clean`
 - Windows: `_build.bat clean`
 
+### Content Generation Scripts
+
+The following scripts live in `input/` and regenerate derived content before building.
+
+**Data Dictionary Table (from CSV):**
+```bash
+python input/generate_data_dictionary_table.py
+```
+- Reads: `input/images/data-dictionary.csv`
+- Writes: `input/includes/data-dictionary-table.html`
+- Path-agnostic — resolves relative to the script location.
+
+**Reference Pages (from PDFs + YAML):**
+```bash
+python input/generate_references.py
+```
+- Reads: `input/references.yaml` (metadata for each PDF)
+- Reads: `input/images/references/*.pdf`
+- Writes: `input/images/references-pages/*.png` (one per page)
+- Writes: `input/pagecontent/references.md` (auto-generated inline preview)
+- Requirements: `pdftoppm` (from poppler-utils / poppler package)
+  - macOS: `brew install poppler`
+  - Ubuntu/Debian: `sudo apt-get install poppler-utils`
+- Idempotent — safe to re-run; cleans orphaned PNGs if page counts change.
+
 ## Architecture
 
 - **Type**: FHIR R4 Implementation Guide using SUSHI/FSH

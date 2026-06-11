@@ -22,6 +22,8 @@ The table below shows the complete data dictionary mapping all TDG data elements
 
 The data dictionary covers all profiles defined in the PH eReferral IG and includes the following columns:
 
+<div class="ph-table" markdown="1">
+
 | Column | Description |
 |--------|-------------|
 | **TDG ID** | Technical Development Group identifier (e.g. REF-1 REF-21) |
@@ -35,11 +37,15 @@ The data dictionary covers all profiles defined in the PH eReferral IG and inclu
 | **Must Support** | Whether the element is marked Must Support in the IG |
 | **Notes** | Implementation notes references and edge cases |
 
+</div>
+
 ---
 
 ## Profile Coverage
 
 The data dictionary covers the following eReferral profiles:
+
+<div class="ph-table" markdown="1">
 
 | Profile | TDG Elements | FHIR Resource |
 |---------|-------------|---------------|
@@ -53,6 +59,8 @@ The data dictionary covers the following eReferral profiles:
 | [ERefImmunization](StructureDefinition-ereferral-immunization.html) | REF-54 to REF-57 | Immunization |
 | [ERefRelatedPerson](StructureDefinition-ereferral-related-person.html) | REF-29 REF-58 to REF-65 | RelatedPerson |
 | [ERefPractitionerRole](StructureDefinition-ereferral-practitioner-role.html) | REF-1 REF-2 REF-5 to REF-11 REF-84 to REF-88 | PractitionerRole |
+
+</div>
 
 ---
 
