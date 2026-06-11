@@ -4,6 +4,8 @@ This page records the decision status relevant to the v0.1 connectathon readines
 
 ## Decision Summary
 
+<div class="ph-table" markdown="1">
+
 | ID | Decision area | Current status | Decision or working assumption | Reference |
 |----|---------------|----------------|--------------------------------|-----------|
 | D-001 | FHIR version | Accepted for v0.1 | v0.1 uses FHIR R4 `4.0.1`. | `sushi-config.yaml` |
@@ -14,6 +16,8 @@ This page records the decision status relevant to the v0.1 connectathon readines
 | D-006 | Non-response and SLA handling | Deferred | Non-response is out of scope until timing and escalation rules are formally defined. | Issue [#47](https://github.com/ph-ereferral-organization/ph-ereferral/issues/47) |
 | D-007 | Versioned release deployment | Pending | No formal versioned v0.1 release URL or tag is available yet. | Issue [#73](https://github.com/ph-ereferral-organization/ph-ereferral/issues/73) |
 | D-008 | Back-referral | Deferred for this test pack | Back-referral is policy-relevant but is not included in the v0.1 minimum connectathon path. | [WHO SMART L1 Basis](who-smart-l1.html) |
+
+</div>
 
 ## ADR Status
 
