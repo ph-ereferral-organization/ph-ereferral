@@ -1,0 +1,116 @@
+<style type="text/css">
+  /* ─────────────────────────────────────────────────────────────
+     Global Table Styling — applies to ALL tables in the IG
+     ───────────────────────────────────────────────────────────── */
+
+  /* Table Responsive (missing from Bootstrap 3 base template) */
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Dark header — keep the styled background color from earlier version */
+  .thead-dark th {
+    text-align: left;
+    padding: 6px 10px;
+    border: 1px solid #dee2e6;
+    font-weight: bold;
+    background-color: #f5f5f5;
+  }
+
+  /* Global table enhancements */
+  .table-bordered {
+    border: 1px solid #dee2e6;
+  }
+  .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #dee2e6;
+  }
+
+  .table-striped tbody tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+
+
+  /* ─────────────────────────────────────────────────────────────
+     Base styling for ALL tables (including markdown tables
+     without Bootstrap classes)
+     ───────────────────────────────────────────────────────────── */
+  #segment-content table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border: 1px solid #dee2e6;
+  }
+
+  /* Header: light grey background with user-specified styling */
+  #segment-content th {
+    text-align: left;
+    padding: 6px 10px;
+    border: 1px solid #dee2e6;
+    font-weight: bold;
+    color: #333;
+    background-color: #f5f5f5;
+  }
+
+  /* Body cells: keep borders, no padding or font-size manipulation */
+  #segment-content td {
+    border: 1px solid #dee2e6;
+  }
+
+  /* First column bold */
+  #segment-content td:first-child {
+    font-weight: bold;
+  }
+
+  /* Very light zebra striping */
+  #segment-content tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, 0.015);
+  }
+
+
+
+  /* ─────────────────────────────────────────────────────────────
+     Data-Dictionary-specific scrollable wrapper
+     ───────────────────────────────────────────────────────────── */
+  .data-dictionary-wrapper {
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  /* By default, keep data-dictionary cells from wrapping so
+     columns are NOT squished; the .table-responsive wrapper
+     provides the horizontal scrollbar instead. */
+  .data-dictionary-wrapper td,
+  .data-dictionary-wrapper th {
+    white-space: nowrap;
+  }
+
+  /* Allow the long-text columns to wrap with a sensible min-width */
+  .data-dictionary-wrapper td:nth-child(4),   /* Description/Definition */
+  .data-dictionary-wrapper td:nth-child(9),   /* CDG Comments */
+  .data-dictionary-wrapper td:nth-child(10),  /* [FINAL] FHIR Element (R4) */
+  .data-dictionary-wrapper td:nth-child(11),  /* Linked By */
+  .data-dictionary-wrapper td:nth-child(12),  /* Value Set */
+  .data-dictionary-wrapper td:nth-child(13) { /* TDG Comments */
+    white-space: normal;
+    min-width: 180px;
+    max-width: 350px;
+  }
+
+  /* Shrink a few short columns so they don’t eat excess space */
+  .data-dictionary-wrapper th:nth-child(1),
+  .data-dictionary-wrapper td:nth-child(1),   /* Workflow Task */
+  .data-dictionary-wrapper th:nth-child(2),
+  .data-dictionary-wrapper td:nth-child(2),   /* Element ID */
+  .data-dictionary-wrapper th:nth-child(8),
+  .data-dictionary-wrapper td:nth-child(8) { /* Required? */
+    width: 1%;
+    white-space: nowrap;
+  }
+</style>

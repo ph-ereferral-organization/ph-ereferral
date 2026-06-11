@@ -1,0 +1,608 @@
+<div class="table-responsive data-dictionary-wrapper">
+  <table class="table table-bordered table-striped table-condensed">
+    <thead class="thead-dark">
+      <tr>
+        <th>Workflow Task</th>
+        <th>Element ID</th>
+        <th>Data Element</th>
+        <th>Description/Definition</th>
+        <th>Clinical Information Group</th>
+        <th>Data Type</th>
+        <th>Examples</th>
+        <th>Required?</th>
+        <th>CDG Comments</th>
+        <th>[FINAL] FHIR Element (R4)</th>
+        <th>Linked By</th>
+        <th>Value Set</th>
+        <th>TDG Comments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-1</td>
+        <td>Name of Referring Practitioner </td>
+        <td>Printed name of professional</td>
+        <td>01 Sending Practitioner (requestor)</td>
+        <td>Name</td>
+        <td>&nbsp;</td>
+        <td>Yes</td>
+        <td>agree / comments (UN)<br>put this on hold (JL)</td>
+        <td>Practitioner.name</td>
+        <td>ServiceRequest.requester Reference(PractitionerRole.practitioner -&gt; Practitioner)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-2</td>
+        <td>Practitioner Role</td>
+        <td>Designation or role of referring professional</td>
+        <td>01 Sending Practitioner (requestor)</td>
+        <td>List</td>
+        <td>Midwife, District Nurse, District MEdical Officer</td>
+        <td>Yes</td>
+        <td>&nbsp;</td>
+        <td>PractitionerRole.code</td>
+        <td>ServiceRequest.requester Reference(PractitionerRole)</td>
+        <td>PractitionerRole.code<br>├─ Display - PSOC/PHIC<br>├─ Code - Snomed</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-3</td>
+        <td>Date &amp; Time of Signature</td>
+        <td>When signed</td>
+        <td>01 Sending Practitioner (requestor)</td>
+        <td>DateTime</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Provenance.recorded</td>
+        <td>ServiceRequest.relevantHistory</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-4</td>
+        <td>Professional Signature</td>
+        <td>Signature of the professional</td>
+        <td>01 Sending Practitioner (requestor)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>For TDG: Review datatype for signature</td>
+        <td>Provenance.signature</td>
+        <td>ServiceRequest.relevantHistory</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-5</td>
+        <td>Initiating Facility Name</td>
+        <td>Referring facility official name. <br>Imp: For pregnancy it is Brrangay Name</td>
+        <td>02 Sending Facility (requestor)</td>
+        <td>Text</td>
+        <td>Dr Alvin to add example of actual Value</td>
+        <td>Yes</td>
+        <td>For TDG: Please consider the means of NHFR-based data retrieval </td>
+        <td>Organization.name</td>
+        <td>ServiceRequest.requester Reference (PractitionerRole.organization -&gt; Organization)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-6</td>
+        <td>Initiating Facility NHFR Code</td>
+        <td>DOH National Health Facility Registry code</td>
+        <td>02 Sending Facility (requestor)</td>
+        <td>Code</td>
+        <td>&nbsp;</td>
+        <td>Yes</td>
+        <td>Refer to REF-5</td>
+        <td>Organization.identifier(NHFR).value</td>
+        <td>ServiceRequest.requester Reference(PractitionerRole.organization)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-7</td>
+        <td>Initiating Facility Address</td>
+        <td>Facility address</td>
+        <td>02 Sending Facility (requestor)</td>
+        <td>Address</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>Refer to REF-5</td>
+        <td>Organization.address</td>
+        <td>ServiceRequest.requester Reference(PractitionerRole.organization)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-8</td>
+        <td>Initiating Facility Contact Number</td>
+        <td>Facility phone number</td>
+        <td>02 Sending Facility (requestor)</td>
+        <td>Phone Number</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>Refer to REF-5</td>
+        <td>Organization.telecom</td>
+        <td>ServiceRequest.requester Reference(PractitionerRole.organization)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-9</td>
+        <td>Care Navigator</td>
+        <td>Name of receiving staff/navigator</td>
+        <td>03 Recieving Practitioner</td>
+        <td>Name</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Practitioner.name</td>
+        <td>Task.owner Reference(PractitionerRole.practitioner -&gt; Practitioner Name)</td>
+        <td>&nbsp;</td>
+        <td>All Requesting data is represented by ServiceRequest. These are data elements that remain fixed throughout the referral process (the “root” of the referral). For example: Referring Practitioner, Initiating Facility, Reason for referral. Once established, these values do not change as the referral progresses.<br><br>All Receiving data is represented by a Task. These are data elements that are moving/dynamic -- may change as the referral is acted upon. For example: Receiving facility, care navigator, time called. Acceptance or rejection of the referral may change these values.</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-10</td>
+        <td>Receiving Facility Name</td>
+        <td>Intended receiving facility</td>
+        <td>04 Receiving Facility</td>
+        <td>Free Text</td>
+        <td>&nbsp;</td>
+        <td>Yes</td>
+        <td>Refer to REF-5</td>
+        <td>Organization.name</td>
+        <td>Task.owner Reference(PractitionerRole.organization -&gt; Organization)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-11</td>
+        <td>Receiving Facility NHFR Code</td>
+        <td>DOH facility code of receiver</td>
+        <td>04 Receiving Facility</td>
+        <td>Code</td>
+        <td>&nbsp;</td>
+        <td>Yes</td>
+        <td>Refer to REF-5</td>
+        <td>Organization.identifier(NHFR).value</td>
+        <td>Task.owner Reference(PractitionerRole.organization -&gt; Organization)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-12</td>
+        <td>Health Care Provider Network (HCPN) Name</td>
+        <td>Name of the Health Care Provider Network for Referrals. Referrals can only be be within Network</td>
+        <td>05 Referral Request</td>
+        <td>Free Text</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>For TDG: Please consider the means of HCPN-based data retrieval </td>
+        <td>Organization.identifier(HCPN).value<br>├─  Slice by .url (new - cannonical)</td>
+        <td>Task.owner Reference(PractitionerRole.organization -&gt; Organization)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-13</td>
+        <td>Date of Referral</td>
+        <td>Date the referral was created</td>
+        <td>05 Referral Request</td>
+        <td>Date</td>
+        <td>&nbsp;</td>
+        <td>Yes</td>
+        <td>&nbsp;</td>
+        <td>ServiceRequest.authoredOn</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-14</td>
+        <td>Referral Category</td>
+        <td>Urgency and setting indicated by the referrer (emergency vs outpatient/routine).</td>
+        <td>05 Referral Request</td>
+        <td>List</td>
+        <td>Emergency or Outpatient</td>
+        <td>Yes</td>
+        <td>&nbsp;</td>
+        <td>ServiceRequest.priority</td>
+        <td>removed asap<br><br>Already addressed: https://build.fhir.org/ig/ph-ereferral-organization/ph-ereferral/en/ValueSet-ereferral-priority.html<br>Notify Terminology team<br>urn://example.com/ph-ereferral/fhir/ValueSet/ereferral-priority</td>
+        <td>ServiceRequest.priority (Required - routine | urgent | removed_asap | stat) </td>
+        <td>ServiceRequest.priority - drop from the UI side the &quot;asap&quot; and &quot;urgent&quot; code. Ask John if this will work. <br><br>In the server side, we can opt to reject submissions with &quot;asap&quot;. However, in the UI side, if doctors will click this they might ask why this did not work. <br><br>Next FHIR Path is &quot;ServiceRequest.category&quot;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-15</td>
+        <td>Time Called</td>
+        <td>This is the date and time when the sending facility called the receiving facility regarding initial inquiry of the referral</td>
+        <td>05 Referral Request</td>
+        <td>DateTime</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>Retained definition and REF-17 dependent. Using the tentative decision on REF-17, &quot;Action point: Return&quot;. Hence, will record non-successful referrals.</td>
+        <td>Task.authoredOn</td>
+        <td>Task.focus Reference(ServiceRequest)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Create Referral</td>
+        <td>REF-16</td>
+        <td>Reason for Referral (service type)</td>
+        <td>Classification of the requested service</td>
+        <td>05 Referral Request</td>
+        <td>Structured List</td>
+        <td>Consultation<br>Diagnostics<br>Treatment/Procedure<br>Others</td>
+        <td>Yes</td>
+        <td>&nbsp;</td>
+        <td>ServiceRequest.category</td>
+        <td>&nbsp;</td>
+        <td>Terminology Team to Create a Valueset<br><br>Base Example: https://hl7.org/fhir/R4/valueset-servicerequest-category.html</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Referral Triage</td>
+        <td>REF-17</td>
+        <td>Action Point: Received</td>
+        <td>Receiving facility confirms receipt<br><br>---<br><br>Action point should reflect the action of the receiver. This data element may be conditional, depending on the receiver&#x27;s response (accepted, forwarded (to a different facility), or returned/rejected).</td>
+        <td>05 Referral Request</td>
+        <td>&nbsp;</td>
+        <td>Task.status = <br><br>code: received<br>display: Received (keep)</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>Task.status</td>
+        <td>&nbsp;</td>
+        <td>TaskStatus - use base FHIR</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Referral Triage</td>
+        <td>REF-18</td>
+        <td>Action Point: Referred (Forwarded)</td>
+        <td>Case redirected to another facility</td>
+        <td>05 Referral Request</td>
+        <td>&nbsp;</td>
+        <td>Task.status = <br><br>code: rejected</td>
+        <td>No</td>
+        <td>Refer to REF-17</td>
+        <td>Task.status</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Presenting Patient</td>
+        <td>REF-21</td>
+        <td>Patient Full Name</td>
+        <td>Patient legal name</td>
+        <td>06 Patient Demographics</td>
+        <td>Name</td>
+        <td>&nbsp;</td>
+        <td>Yes</td>
+        <td>&nbsp;</td>
+        <td>Patient.name</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Presenting Patient</td>
+        <td>REF-22</td>
+        <td>Sex (Administrative Gender)</td>
+        <td>Administrative gender of patient</td>
+        <td>06 Patient Demographics</td>
+        <td>Coded List</td>
+        <td>&nbsp;</td>
+        <td>Yes</td>
+        <td>&nbsp;</td>
+        <td>Patient.gender</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Presenting Patient</td>
+        <td>REF-23</td>
+        <td>Birth Date</td>
+        <td>Patient date of birth</td>
+        <td>06 Patient Demographics</td>
+        <td>Date</td>
+        <td>&nbsp;</td>
+        <td>Yes</td>
+        <td>&nbsp;</td>
+        <td>Patient.birthDate</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Presenting Patient</td>
+        <td>REF-24</td>
+        <td>Age (computed)</td>
+        <td>Derived age at referral</td>
+        <td>06 Patient Demographics</td>
+        <td>Formula / Logic</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Patient.birthDate</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Presenting Patient</td>
+        <td>REF-25</td>
+        <td>Identity Number (PhilSys)</td>
+        <td>PhilSys National ID number</td>
+        <td>06 Patient Demographics</td>
+        <td>ID</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Patient.identifier(PHCorePhilSysID)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Presenting Patient</td>
+        <td>REF-26</td>
+        <td>PhilHealth ID</td>
+        <td>PhilHealth membership number</td>
+        <td>06 Patient Demographics</td>
+        <td>ID</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Patient.identifier(PHCorePhilHealthID)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Presenting Patient</td>
+        <td>REF-27</td>
+        <td>Patient Address</td>
+        <td>Current residence address</td>
+        <td>06 Patient Demographics</td>
+        <td>Address</td>
+        <td>&nbsp;</td>
+        <td>Yes</td>
+        <td>&nbsp;</td>
+        <td>Patient.address</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Presenting Patient</td>
+        <td>REF-28</td>
+        <td>Contact Number</td>
+        <td>Patient phone</td>
+        <td>06 Patient Demographics</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Patient.telecom</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Presenting Patient</td>
+        <td>REF-29</td>
+        <td>Accompanied By / Next of Kin</td>
+        <td>Companion/guardian details</td>
+        <td>06 Patient Demographics</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Patient<br>├─ Patient.contact<br>├─ Patient.contact.name<br>├─ Patient.contact.telecom</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Presenting Patient</td>
+        <td>REF-30</td>
+        <td>Patient Disability Registration</td>
+        <td>PWD registration status/ID</td>
+        <td>06 Patient Demographics</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Patient.extension[pwdDisability]</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Assess Patient Condition</td>
+        <td>REF-31</td>
+        <td>Chief Complaint</td>
+        <td>Presenting complaint</td>
+        <td>07 Clinical Information</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Condition<br>├─ Condition.code.text<br>├─ Condition.category = problem-list-item</td>
+        <td>ServiceRequest.reasonReference Reference (Condition)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Attach Clinical Summary</td>
+        <td>REF-32</td>
+        <td>Clinical History</td>
+        <td>Pertinent history</td>
+        <td>07 Clinical Information</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Observation (see above)<br>├─ Observation.note</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Attach Clinical Summary</td>
+        <td>REF-33</td>
+        <td>Vital Signs – Blood Pressure</td>
+        <td>BP at pre-transfer (can we say latest BP, at the time of referral creation??)<br><br>Do we need all these vitals for all referrals? or Disease Specific<br><br>---<br><br>Follow the AU Core Vital Signs approach</td>
+        <td>07 Clinical Information</td>
+        <td>Numeric (systolic/diastolic)</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Observation<br>├─ Observation.code - ask Term Team<br>├─ Observation.value[x]<br>├─ Observation.category = vital-signs<br>├─ Observation.component[0] Systolic<br>├─ Observation.component[1] Diastolic<br><br>Systolic code Term Team<br>Diastolic code Term Team</td>
+        <td>ServiceRequest.supportingInfo<br> Observation.value[x]</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Attach Clinical Summary</td>
+        <td>REF-34</td>
+        <td>Vital Signs – Heart Rate</td>
+        <td>Pulse rate</td>
+        <td>07 Clinical Information</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Observation<br>├─ Observation.code - ask Term Team<br>├─ Observation.value[x]<br>├─ Observation.category = vital-signs</td>
+        <td>ServiceRequest.supportingInfo<br>Reference(Observation.value[x])</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Attach Clinical Summary</td>
+        <td>REF-35</td>
+        <td>Vital Signs – Respiratory Rate</td>
+        <td>Resp rate</td>
+        <td>07 Clinical Information</td>
+        <td>Numeric</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Observation<br>├─ Observation.code - ask Term Team<br>├─ Observation.value[x]<br>├─ Observation.category = vital-signs</td>
+        <td>ServiceRequest.supportingInfo<br>Reference(Observation.value[x])</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Attach Clinical Summary</td>
+        <td>REF-36</td>
+        <td>Vital Signs – Oxygen Saturation</td>
+        <td>SpO2</td>
+        <td>07 Clinical Information</td>
+        <td>Numeric</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Observation<br>├─ Observation.code - ask Term Team<br>├─ Observation.value[x]<br>├─ Observation.category = vital-signs</td>
+        <td>ServiceRequest.supportingInfo<br>Reference(Observation.value[x])</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Attach Clinical Summary</td>
+        <td>REF-37</td>
+        <td>Vital Signs – Temperature</td>
+        <td>Body temperature</td>
+        <td>07 Clinical Information</td>
+        <td>Numeric</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Observation<br>├─ Observation.code - ask Term Team<br>├─ Observation.value[x]<br>├─ Observation.category = vital-signs</td>
+        <td>ServiceRequest.supportingInfo<br>Reference(Observation.value[x])</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Attach Clinical Summary</td>
+        <td>REF-38</td>
+        <td>Vital Signs – Weight</td>
+        <td>Weight (kg)</td>
+        <td>07 Clinical Information</td>
+        <td>Numeric</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Observation<br>├─ Observation.code - ask Term Team<br>├─ Observation.value[x]<br>├─ Observation.category = vital-signs</td>
+        <td>ServiceRequest.supportingInfo<br>Reference(Observation.value[x])</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Attach Clinical Summary</td>
+        <td>REF-39</td>
+        <td>Treatment Given</td>
+        <td>Stabilization procedures/meds</td>
+        <td>07 Clinical Information</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>Procedure.note</td>
+        <td>ServiceRequest.supportingInfo<br>Reference(Procedure.note)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Attach Clinical Summary</td>
+        <td>REF-40</td>
+        <td>Laboratory Results (attachments)</td>
+        <td>Labs supporting the referral</td>
+        <td>07 Clinical Information</td>
+        <td>File (PDFs, JPEG, etc.)</td>
+        <td>&nbsp;</td>
+        <td>No</td>
+        <td>&nbsp;</td>
+        <td>DiagnositicReport.presentedForm(Attachment.data)</td>
+        <td>ServiceRequest.supportingInfo<br>Reference(DiagnosticReport)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Assess Patient</td>
+        <td>REF-41</td>
+        <td>Working Impression (clinical reason)</td>
+        <td>Provisional diagnosis/assessment motivating referral</td>
+        <td>07 Clinical Information</td>
+        <td>Text</td>
+        <td>&nbsp;</td>
+        <td>Yes</td>
+        <td>&nbsp;</td>
+        <td>Condition<br>├─ Condition.code<br>├─ Condition.category =  encounter-diagnosis</td>
+        <td>ServiceRequest.supportingInfo<br>Reference(Condition.code)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
