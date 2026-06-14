@@ -12,56 +12,20 @@ Description: "Diagnostic report profile for laboratory, diagnostic imaging, path
 * ^experimental = true
 * ^purpose = "To support referral handover of diagnostic reports that summarize or group diagnostic findings, link to structured atomic Observation results when available, and carry a complete formatted report attachment when needed."
 
-* status MS
-  * ^short = "Diagnostic report status"
-  * ^definition = "The current status of the diagnostic report shared with the referral."
-
-* category MS
-  * ^short = "Diagnostic service category"
-  * ^definition = "The diagnostic service category, such as laboratory, radiology, or pathology."
-
-* code MS
-  * ^short = "Diagnostic report type"
-  * ^definition = "The diagnostic report or panel represented by this resource. The inherited FHIR R4 preferred binding uses LOINC diagnostic report codes."
-
 * basedOn MS
 * basedOn insert ObligationOptional
 * basedOn only Reference(ERefServiceRequest)
-  * ^short = "Referral request associated with this report"
-  * ^definition = "The Philippine eReferral ServiceRequest associated with this diagnostic report, when known."
 
-* subject 1..1 MS
+* subject MS
+* subject insert ObligationOptional
+
 * subject only Reference(ERefPatient)
-  * ^short = "Patient who is the subject of the report"
-  * ^definition = "The eReferral patient whose diagnostic findings are summarized in this report."
 
-* effective[x] MS
-  * ^short = "Clinically relevant report time"
-  * ^definition = "The clinically relevant time or period for the diagnostic observations represented by the report."
 
-* issued MS
-  * ^short = "When the report was issued"
-  * ^definition = "The date and time when the diagnostic report was released."
 
-* performer MS
 * performer only Reference(PHCorePractitioner or PHCoreOrganization)
-  * ^short = "Diagnostic report performer"
-  * ^definition = "The practitioner, laboratory, imaging center, or other healthcare organization responsible for the report."
 
-* result MS
 * result only Reference(ERefObservation)
-  * ^short = "Structured atomic diagnostic results"
-  * ^definition = "References to structured atomic Observation results included in or summarized by this report."
-
-* media MS
-
-* media.link MS
-  * ^short = "Selected key image"
-  * ^definition = "A reference to a Media resource containing a selected key image associated with the report. The complete issued report belongs in presentedForm."
-
-* conclusion MS
-  * ^short = "Clinical conclusion or interpretation"
-  * ^definition = "A concise clinical interpretation or summary of the diagnostic findings."
 
 * presentedForm MS
 * presentedForm insert ObligationOptional
