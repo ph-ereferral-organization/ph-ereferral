@@ -65,7 +65,7 @@ def generate_table() -> str:
 
     # Build HTML
     lines = [
-        '<div class="table-responsive data-dictionary-wrapper">',
+        '<div class="table-responsive data-dictionary-wrapper ph-table">',
         '  <table class="table table-bordered table-striped table-condensed">',
         '    <thead class="thead-dark">',
         '      <tr>',

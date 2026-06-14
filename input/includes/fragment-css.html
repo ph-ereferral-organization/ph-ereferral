@@ -17,7 +17,7 @@
     padding: 6px 10px;
     border: 1px solid #dee2e6;
     font-weight: bold;
-    background-color: #f5f5f5;
+    background-color: #e8e8e8;
   }
 
   /* Global table enhancements */
@@ -30,7 +30,7 @@
   }
 
   .table-striped tbody tr:nth-of-type(even) {
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(0, 0, 0, 0.03);
   }
 
   /* ─────────────────────────────────────────────────────────────
@@ -52,7 +52,7 @@
     border: 1px solid #dee2e6;
     font-weight: bold;
     color: #333;
-    background-color: #f5f5f5;
+    background-color: #e8e8e8;
   }
 
   .ph-table td {
@@ -63,8 +63,12 @@
     font-weight: bold;
   }
 
+  .ph-table tr:nth-of-type(odd) {
+    background-color: transparent;
+  }
+
   .ph-table tr:nth-of-type(even) {
-    background-color: rgba(0, 0, 0, 0.015);
+    background-color: rgba(0, 0, 0, 0.03);
   }
 
   /* ─────────────────────────────────────────────────────────────
@@ -75,26 +79,4 @@
     margin-bottom: 1rem;
   }
 
-  .data-dictionary-wrapper td,
-  .data-dictionary-wrapper th {
-    white-space: nowrap;
-  }
-
-  .data-dictionary-wrapper .col-description,
-  .data-dictionary-wrapper .col-comments,
-  .data-dictionary-wrapper .col-fhir-element,
-  .data-dictionary-wrapper .col-linked-by,
-  .data-dictionary-wrapper .col-value-set,
-  .data-dictionary-wrapper .col-tdg-comments {
-    white-space: normal;
-    min-width: 180px;
-    max-width: 350px;
-  }
-
-  .data-dictionary-wrapper .col-workflow,
-  .data-dictionary-wrapper .col-element-id,
-  .data-dictionary-wrapper .col-required {
-    width: 1%;
-    white-space: nowrap;
-  }
 </style>
