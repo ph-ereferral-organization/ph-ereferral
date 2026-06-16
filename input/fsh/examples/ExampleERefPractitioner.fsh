@@ -23,4 +23,4 @@ Description: "Example referring practitioner demonstrating practitioner demograp
 * telecom[1].value = "mcsantos@hospital.ph"
 * telecom[1].use = #work
 * gender = #female
-* qualification.code = $sct#1062931000119102 "Doctor of Medicine"
+* qualification.code = $sct#158965000 "Medical practitioner"

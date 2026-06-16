@@ -5,7 +5,7 @@ Instance: ERefPatientExample
 InstanceOf: ERefPatient
 Usage: #example
 Title: "ERefPatient Example - Juan Dela Cruz"
-Description: "Example patient instance demonstrating the ERefPatient profile with PhilHealth ID, PhilSys ID, PWD registration, and complete demographic information for eReferral."
+Description: "Example patient instance demonstrating the ERefPatient profile with PhilHealth ID, PhilSys ID, and complete demographic information for eReferral."
 
 // Patient identifiers (PHCorePhilHealthID, PHCorePhilSysID)
 * identifier[PHCorePhilHealthID].system = $PhilHealthID
@@ -65,11 +65,11 @@ Description: "Example patient instance demonstrating the ERefPatient profile wit
 * extension[religion].valueCodeableConcept = http://terminology.hl7.org/CodeSystem/v3-ReligiousAffiliation#1025 "Jehovah's Witnesses"
 * extension[race].valueCodeableConcept = http://terminology.hl7.org/CodeSystem/v3-Race#2036-2 "Filipino"
 
-// PWD Disability Registration (REF-30) - eReferral-specific
-* extension[disabilityRegistration].extension[pwdId].valueString = "PWD-NCR-QC-123456"
-* extension[disabilityRegistration].extension[disabilityType][0].valueCodeableConcept = PWDDisabilityTypeCS#physical "Physical/Orthopedic Disability"
-* extension[disabilityRegistration].extension[idExpirationDate].valueDate = "2027-03-15"
+// PWD Disability Registration (REF-30) - inherited from PHCorePatient
+* extension[pwdDisability].extension[pwdId].valueString = "PWD-NCR-QC-123456"
+* extension[pwdDisability].extension[disabilityType][0].valueCodeableConcept = PWDDisabilityTypeCS#physical "Physical/Orthopedic Disability"
+* extension[pwdDisability].extension[idExpirationDate].valueDate = "2027-03-15"
 
 // Text narrative
 * text.status = #generated
-* text.div = "<div xmlns='http://www.w3.org/1999/xhtml'>Juan Dela Cruz is a male patient born on 15 June 1985, residing in Barangay Malinis, Quezon City, NCR, Philippines. Contact: +639171234567. PWD ID: PWD-NCR-QC-123456 (expires 2027-03-15). Father contact: Roberto Dela Cruz.</div>"
+* text.div = "<div xmlns='http://www.w3.org/1999/xhtml'>Juan Dela Cruz is a male patient born on 15 June 1985, residing in Barangay Malinis, Quezon City, NCR, Philippines. Contact: +639****4567. Father contact: Roberto Dela Cruz.</div>"

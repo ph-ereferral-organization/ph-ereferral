@@ -1,5 +1,5 @@
 Profile: ERefServiceRequest
-Parent: ServiceRequest
+Parent: PHCoreServiceRequest
 Id: ereferral-service-request
 Title: "EReferral ServiceRequest"
 Description: "Profile for ServiceRequest resource in the Philippine eReferral context. This profile defines the core referral request structure for referring patients between healthcare facilities."
