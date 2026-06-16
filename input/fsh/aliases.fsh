@@ -10,6 +10,7 @@ Alias: $PSGC = https://psa.gov.ph/classification/psgc
 Alias: $PSOC = https://psa.gov.ph/classification/psoc/unit
 Alias: $v2-0203 = http://terminology.hl7.org/CodeSystem/v2-0203
 Alias: $v3-ActCode = http://terminology.hl7.org/CodeSystem/v3-ActCode
+Alias: $v3-DataOperation = http://terminology.hl7.org/CodeSystem/v3-DataOperation
 Alias: $condition-clinical = http://terminology.hl7.org/CodeSystem/condition-clinical
 Alias: $condition-ver-status = http://terminology.hl7.org/CodeSystem/condition-ver-status
 Alias: $condition-category = http://terminology.hl7.org/CodeSystem/condition-category

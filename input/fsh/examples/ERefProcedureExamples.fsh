@@ -5,7 +5,7 @@ Title: "Example Procedure - Electrocardiogram"
 Description: "Example diagnostic procedure documented as supporting clinical information for referral."
 
 * status = #completed
-* category = $sct#103693007 "Diagnostic procedure"
+* category = $sct#386053000 "Evaluation procedure"
 * code = $sct#29303009 "Electrocardiographic procedure"
 * subject = Reference(ExampleERefPatient)
 * performedDateTime = "2025-03-15T09:15:00+08:00"

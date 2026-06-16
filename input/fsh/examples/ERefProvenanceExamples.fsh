@@ -8,11 +8,11 @@ Description: "Provenance record demonstrating professional signature attestation
 
 * target = Reference(ExampleERefServiceRequestMinimal)
 * recorded = "2025-03-15T09:30:00+08:00"
-* activity = $v3-ActCode#CREATE "create"
+* activity = $v3-DataOperation#CREATE "create"
 * agent[0].type = $provenance-participant-type#author "Author"
 * agent[=].who = Reference(ExampleERefPractitionerRoleMinimal)
 * agent[=].onBehalfOf = Reference(ExampleERefOrganizationMinimal)
-* signature[0].type = $signature-type#1.2.840.10065.1.12.1.5 "Signature"
+* signature[0].type = $signature-type#1.2.840.10065.1.12.1.5 "Verification Signature"
 * signature[=].when = "2025-03-15T09:30:00+08:00"
 * signature[=].who = Reference(ExampleERefPractitionerRoleMinimal)
 * signature[=].data = "dGVzdHNpZ25hdHVyZWJhc2U2NA=="
@@ -26,7 +26,7 @@ Description: "Provenance record documenting a referral status update without sig
 
 * target = Reference(ExampleERefServiceRequestMinimal)
 * recorded = "2025-03-16T14:22:00+08:00"
-* activity = $v3-ActCode#UPDATE "revise"
+* activity = $v3-DataOperation#UPDATE "revise"
 * agent[0].type = $provenance-participant-type#author "Author"
 * agent[=].who = Reference(ExampleERefPractitionerRoleMinimal)
 * agent[=].onBehalfOf = Reference(ExampleERefOrganizationMinimal)
@@ -88,7 +88,7 @@ Title: "Example eReferral Service Request (Minimal)"
 Description: "Minimal service request instance for Provenance demonstration."
 * status = #active
 * intent = #order
-* code = $sct#103695009 "Referral to specialist"
+* code = $sct#103696004 "Patient referral to specialist"
 * subject = Reference(ExampleERefPatientMinimal)
 * authoredOn = "2025-03-15T09:30:00+08:00"
 * requester = Reference(ExampleERefPractitionerRoleMinimal)

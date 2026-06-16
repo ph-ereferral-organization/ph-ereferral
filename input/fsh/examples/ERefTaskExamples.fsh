@@ -233,7 +233,7 @@ Description: "Minimal ServiceRequest instance referenced by Task examples."
 
 * status = #active
 * intent = #order
-* code = $sct#183519001 "Referral to cardiology service"
+* code = $sct#183519002 "Referral to cardiology service"
 * subject = Reference(ExampleERefPatientTask)
 * authoredOn = "2025-03-15T09:30:00+08:00"
 * requester = Reference(ExampleERefPractitionerRoleRequester)
@@ -250,7 +250,7 @@ Description: "ServiceRequest representing the onward referral created after the 
 * status = #active
 * intent = #order
 * replaces = Reference(ExampleERefServiceRequestTask)
-* code = $sct#183519001 "Referral to cardiology service"
+* code = $sct#183519002 "Referral to cardiology service"
 * subject = Reference(ExampleERefPatientTask)
 * authoredOn = "2025-03-15T10:15:00+08:00"
 * requester = Reference(ExampleERefPractitionerRoleRequester)

@@ -11,7 +11,7 @@ Title: "Example Chief Complaint Observation"
 Description: "Example chief complaint for eReferral (REF-31). Referenced via ServiceRequest.reasonReference to provide clinical context for referral."
 * status = #final
 * category = $observation-category#survey "Survey"
-* code = $loinc#10154-3 "Chief complaint"
+* code = $loinc#10154-3 "Chief complaint Narrative - Reported"
 * code.text = "Chief Complaint"
 * subject = Reference(ExampleERefPatient)
 * effectiveDateTime = "2025-03-15T09:00:00+08:00"
