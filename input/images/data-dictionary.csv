@@ -1,0 +1,117 @@
+Workflow Task,Element ID,Data Element,Description/Definition,Clinical Information Group,Data Type,Examples,Required?,CDG Comments,[FINAL] FHIR Element (R4),Linked By,Value Set,TDG Comments
+,,Name of the Data Element in the Form,Description/Definition of the data element,"Name of the clinical information Group (e.g. Referring Provider, Patient, Receiving Provider, Clinical Summary, Medication etc)","Data type in which data is captured; text, coded value etc.). This is not FHIR Data type",Include Real World example of how data is captured for this element. Paste here or link to images,"Is the Data Element required, conditional or optional?
+ (Yes or No)",,What is the FHIR Resource and Element that will be used to capture the data?,,Is there a codesystem / valueset required in the form?,
+Create Referral,REF-1,Name of Referring Practitioner ,Printed name of professional,01 Sending Practitioner (requestor),Name,,Yes,"agree / comments (UN)
+put this on hold (JL)",Practitioner.name,ServiceRequest.requester Reference(PractitionerRole.practitioner -> Practitioner),,
+Create Referral,REF-2,Practitioner Role,Designation or role of referring professional,01 Sending Practitioner (requestor),List,"Midwife, District Nurse, District MEdical Officer",Yes,,PractitionerRole.code,ServiceRequest.requester Reference(PractitionerRole),"PractitionerRole.code
+├─ Display - PSOC/PHIC
+├─ Code - Snomed",
+Create Referral,REF-3,Date & Time of Signature,When signed,01 Sending Practitioner (requestor),DateTime,,No,,Provenance.recorded,ServiceRequest.relevantHistory,,
+Create Referral,REF-4,Professional Signature,Signature of the professional,01 Sending Practitioner (requestor),,,No,For TDG: Review datatype for signature,Provenance.signature,ServiceRequest.relevantHistory,,
+Create Referral,REF-5,Initiating Facility Name,"Referring facility official name. 
+Imp: For pregnancy it is Brrangay Name",02 Sending Facility (requestor),Text,Dr Alvin to add example of actual Value,Yes,For TDG: Please consider the means of NHFR-based data retrieval ,Organization.name,ServiceRequest.requester Reference (PractitionerRole.organization -> Organization),,
+Create Referral,REF-6,Initiating Facility NHFR Code,DOH National Health Facility Registry code,02 Sending Facility (requestor),Code,,Yes,Refer to REF-5,Organization.identifier(NHFR).value,ServiceRequest.requester Reference(PractitionerRole.organization),,
+Create Referral,REF-7,Initiating Facility Address,Facility address,02 Sending Facility (requestor),Address,,No,Refer to REF-5,Organization.address,ServiceRequest.requester Reference(PractitionerRole.organization),,
+Create Referral,REF-8,Initiating Facility Contact Number,Facility phone number,02 Sending Facility (requestor),Phone Number,,No,Refer to REF-5,Organization.telecom,ServiceRequest.requester Reference(PractitionerRole.organization),,
+Create Referral,REF-9,Care Navigator,Name of receiving staff/navigator,03 Recieving Practitioner,Name,,No,,Practitioner.name,Task.owner Reference(PractitionerRole.practitioner -> Practitioner Name),,"All Requesting data is represented by ServiceRequest. These are data elements that remain fixed throughout the referral process (the “root” of the referral). For example: Referring Practitioner, Initiating Facility, Reason for referral. Once established, these values do not change as the referral progresses.
+
+All Receiving data is represented by a Task. These are data elements that are moving/dynamic -- may change as the referral is acted upon. For example: Receiving facility, care navigator, time called. Acceptance or rejection of the referral may change these values."
+Create Referral,REF-10,Receiving Facility Name,Intended receiving facility,04 Receiving Facility,Free Text,,Yes,Refer to REF-5,Organization.name,Task.owner Reference(PractitionerRole.organization -> Organization),,
+Create Referral,REF-11,Receiving Facility NHFR Code,DOH facility code of receiver,04 Receiving Facility,Code,,Yes,Refer to REF-5,Organization.identifier(NHFR).value,Task.owner Reference(PractitionerRole.organization -> Organization),,
+Create Referral,REF-12,Health Care Provider Network (HCPN) Name,Name of the Health Care Provider Network for Referrals. Referrals can only be be within Network,05 Referral Request,Free Text,,No,For TDG: Please consider the means of HCPN-based data retrieval ,"Organization.identifier(HCPN).value
+├─  Slice by .url (new - cannonical)",Task.owner Reference(PractitionerRole.organization -> Organization),,
+Create Referral,REF-13,Date of Referral,Date the referral was created,05 Referral Request,Date,,Yes,,ServiceRequest.authoredOn,,,
+Create Referral,REF-14,Referral Category,Urgency and setting indicated by the referrer (emergency vs outpatient/routine).,05 Referral Request,List,Emergency or Outpatient,Yes,,ServiceRequest.priority,"removed asap
+
+Already addressed: https://build.fhir.org/ig/ph-ereferral-organization/ph-ereferral/en/ValueSet-ereferral-priority.html
+Notify Terminology team
+urn://example.com/ph-ereferral/fhir/ValueSet/ereferral-priority",ServiceRequest.priority (Required - routine | urgent | removed_asap | stat) ,"ServiceRequest.priority - drop from the UI side the ""asap"" and ""urgent"" code. Ask John if this will work. 
+
+In the server side, we can opt to reject submissions with ""asap"". However, in the UI side, if doctors will click this they might ask why this did not work. 
+
+Next FHIR Path is ""ServiceRequest.category"""
+Create Referral,REF-15,Time Called,This is the date and time when the sending facility called the receiving facility regarding initial inquiry of the referral,05 Referral Request,DateTime,,No,"Retained definition and REF-17 dependent. Using the tentative decision on REF-17, ""Action point: Return"". Hence, will record non-successful referrals.",Task.authoredOn,Task.focus Reference(ServiceRequest),,
+Create Referral,REF-16,Reason for Referral (service type),Classification of the requested service,05 Referral Request,Structured List,"Consultation
+Diagnostics
+Treatment/Procedure
+Others",Yes,,ServiceRequest.category,,"Terminology Team to Create a Valueset
+
+Base Example: https://hl7.org/fhir/R4/valueset-servicerequest-category.html",
+Referral Triage,REF-17,Action Point: Received,"Receiving facility confirms receipt
+
+---
+
+Action point should reflect the action of the receiver. This data element may be conditional, depending on the receiver's response (accepted, forwarded (to a different facility), or returned/rejected).",05 Referral Request,,"Task.status = 
+
+code: received
+display: Received (keep)",,No,Task.status,,TaskStatus - use base FHIR,
+Referral Triage,REF-18,Action Point: Referred (Forwarded),Case redirected to another facility,05 Referral Request,,"Task.status = 
+
+code: rejected",No,Refer to REF-17,Task.status,,,
+Presenting Patient,REF-21,Patient Full Name,Patient legal name,06 Patient Demographics,Name,,Yes,,Patient.name,,,
+Presenting Patient,REF-22,Sex (Administrative Gender),Administrative gender of patient,06 Patient Demographics,Coded List,,Yes,,Patient.gender,,,
+Presenting Patient,REF-23,Birth Date,Patient date of birth,06 Patient Demographics,Date,,Yes,,Patient.birthDate,,,
+Presenting Patient,REF-24,Age (computed),Derived age at referral,06 Patient Demographics,Formula / Logic,,No,,Patient.birthDate,,,
+Presenting Patient,REF-25,Identity Number (PhilSys),PhilSys National ID number,06 Patient Demographics,ID,,No,,Patient.identifier(PHCorePhilSysID),,,
+Presenting Patient,REF-26,PhilHealth ID,PhilHealth membership number,06 Patient Demographics,ID,,No,,Patient.identifier(PHCorePhilHealthID),,,
+Presenting Patient,REF-27,Patient Address,Current residence address,06 Patient Demographics,Address,,Yes,,Patient.address,,,
+Presenting Patient,REF-28,Contact Number,Patient phone,06 Patient Demographics,,,No,,Patient.telecom,,,
+Presenting Patient,REF-29,Accompanied By / Next of Kin,Companion/guardian details,06 Patient Demographics,,,No,,"Patient
+├─ Patient.contact
+├─ Patient.contact.name
+├─ Patient.contact.telecom",,,
+Presenting Patient,REF-30,Patient Disability Registration,PWD registration status/ID,06 Patient Demographics,,,No,,Patient.extension[pwdDisability],,,
+Assess Patient Condition,REF-31,Chief Complaint,Presenting complaint,07 Clinical Information,,,No,,"Condition
+├─ Condition.code.text
+├─ Condition.category = problem-list-item",ServiceRequest.reasonReference Reference (Condition),,
+Attach Clinical Summary,REF-32,Clinical History,Pertinent history,07 Clinical Information,,,No,,"Observation (see above)
+├─ Observation.note",,,
+Attach Clinical Summary,REF-33,Vital Signs – Blood Pressure,"BP at pre-transfer (can we say latest BP, at the time of referral creation??)
+
+Do we need all these vitals for all referrals? or Disease Specific
+
+---
+
+Follow the AU Core Vital Signs approach",07 Clinical Information,Numeric (systolic/diastolic),,No,,"Observation
+├─ Observation.code - ask Term Team
+├─ Observation.value[x]
+├─ Observation.category = vital-signs
+├─ Observation.component[0] Systolic
+├─ Observation.component[1] Diastolic
+
+Systolic code Term Team
+Diastolic code Term Team","ServiceRequest.supportingInfo
+ Observation.value[x]",,
+Attach Clinical Summary,REF-34,Vital Signs – Heart Rate,Pulse rate,07 Clinical Information,,,No,,"Observation
+├─ Observation.code - ask Term Team
+├─ Observation.value[x]
+├─ Observation.category = vital-signs","ServiceRequest.supportingInfo
+Reference(Observation.value[x])",,
+Attach Clinical Summary,REF-35,Vital Signs – Respiratory Rate,Resp rate,07 Clinical Information,Numeric,,No,,"Observation
+├─ Observation.code - ask Term Team
+├─ Observation.value[x]
+├─ Observation.category = vital-signs","ServiceRequest.supportingInfo
+Reference(Observation.value[x])",,
+Attach Clinical Summary,REF-36,Vital Signs – Oxygen Saturation,SpO2,07 Clinical Information,Numeric,,No,,"Observation
+├─ Observation.code - ask Term Team
+├─ Observation.value[x]
+├─ Observation.category = vital-signs","ServiceRequest.supportingInfo
+Reference(Observation.value[x])",,
+Attach Clinical Summary,REF-37,Vital Signs – Temperature,Body temperature,07 Clinical Information,Numeric,,No,,"Observation
+├─ Observation.code - ask Term Team
+├─ Observation.value[x]
+├─ Observation.category = vital-signs","ServiceRequest.supportingInfo
+Reference(Observation.value[x])",,
+Attach Clinical Summary,REF-38,Vital Signs – Weight,Weight (kg),07 Clinical Information,Numeric,,No,,"Observation
+├─ Observation.code - ask Term Team
+├─ Observation.value[x]
+├─ Observation.category = vital-signs","ServiceRequest.supportingInfo
+Reference(Observation.value[x])",,
+Attach Clinical Summary,REF-39,Treatment Given,Stabilization procedures/meds,07 Clinical Information,,,No,,Procedure.note,"ServiceRequest.supportingInfo
+Reference(Procedure.note)",,
+Attach Clinical Summary,REF-40,Laboratory Results (attachments),Labs supporting the referral,07 Clinical Information,"File (PDFs, JPEG, etc.)",,No,,DiagnositicReport.presentedForm(Attachment.data),"ServiceRequest.supportingInfo
+Reference(DiagnosticReport)",,
+Assess Patient,REF-41,Working Impression (clinical reason),Provisional diagnosis/assessment motivating referral,07 Clinical Information,Text,,Yes,,"Condition
+├─ Condition.code
+├─ Condition.category =  encounter-diagnosis","ServiceRequest.supportingInfo
+Reference(Condition.code)",,

@@ -4,7 +4,7 @@ Usage: #example
 Title: "Example eReferral Encounter"
 Description: "An example encounter for a cardiology referral, where a patient is received at a tertiary hospital based on a referral from a rural health unit."
 
-* identifier.system = "urn://example.com/ph-ereferral/encounter-id"
+* identifier.system = "https://pgh.gov.ph/fhir/encounter-id"
 * identifier.value = "ENC-2025-001234"
 
 * status = #finished

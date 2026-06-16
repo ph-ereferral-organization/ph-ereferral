@@ -1,0 +1,82 @@
+<style type="text/css">
+  /* ─────────────────────────────────────────────────────────────
+     Class-based Table Styling — only affects tables with classes
+     ───────────────────────────────────────────────────────────── */
+
+  /* Table Responsive (missing from Bootstrap 3 base template) */
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Dark header */
+  .thead-dark th {
+    text-align: left;
+    padding: 6px 10px;
+    border: 1px solid #dee2e6;
+    font-weight: bold;
+    background-color: #e8e8e8;
+  }
+
+  /* Global table enhancements */
+  .table-bordered {
+    border: 1px solid #dee2e6;
+  }
+  .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #dee2e6;
+  }
+
+  .table-striped tbody tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     .ph-table wrapper — for markdown tables in narrative pages
+     Wrap your markdown table in <div class="ph-table" markdown="1">
+     ───────────────────────────────────────────────────────────── */
+  .ph-table table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border: 1px solid #dee2e6;
+  }
+
+  .ph-table th {
+    text-align: left;
+    padding: 6px 10px;
+    border: 1px solid #dee2e6;
+    font-weight: bold;
+    color: #333;
+    background-color: #e8e8e8;
+  }
+
+  .ph-table td {
+    border: 1px solid #dee2e6;
+  }
+
+  .ph-table td:first-child {
+    font-weight: bold;
+  }
+
+  .ph-table tr:nth-of-type(odd) {
+    background-color: transparent;
+  }
+
+  .ph-table tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Data-Dictionary-specific scrollable wrapper
+     ───────────────────────────────────────────────────────────── */
+  .data-dictionary-wrapper {
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+
+</style>

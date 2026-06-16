@@ -27,5 +27,7 @@ Description: "Profile on PractitionerRole for the Philippines eReferral specific
 // eReferral-specific extension:
 // TDG REF-2: Practitioner Role - Must Support for eReferral workflow
 * code 1..* MS
+* insert ObligationRequired
+
 * code ^short = "Role or designation of the practitioner"
 * code ^definition = "The designation or role of the practitioner (e.g., Midwife, District Nurse, District Medical Officer)."

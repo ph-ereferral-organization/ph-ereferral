@@ -4,7 +4,7 @@
 # │  see: https://fshschool.org/docs/sushi/configuration/.                                         │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 id: fhir.ph.ereferral
-canonical: urn://example.com/ph-ereferral/fhir
+canonical: https://fhir.doh.gov.ph/pheref
 name: PHeReferralImplementationGuide
 title: PH eReferral Implementation Guide
 description: This implementation guide is provided to support the use of FHIR®© in an Philippines context, and defines the minimum set of constraints on the FHIR resources to create the PH eReferral profiles. This implementation guide forms the foundation to build future PH Realm FHIR implementation guides and its content will continue to grow to meet the needs of PH implementers.
@@ -79,12 +79,15 @@ menu:
   Home: index.html
   Guidance:
     WHO SMART L1 Basis: who-smart-l1.html
-    v0.1 Connectathon Readiness: connectathon-readiness.html
-    v0.1 Scope and Release Notes: v01-scope.html
-    Logical Information Model: logical-information-model.html
-    v0.1 Coverage Map: coverage-map.html
-    v0.1 Decision Log: decision-log.html
+    Referral Workflow: referral-workflow.html
+    Connectathon Readiness: connectathon-readiness.html
+    Scope and Release Notes: v01-scope.html
+    Coverage Map: coverage-map.html
+    Decision Log: decision-log.html
   Artifacts: artifacts.html
+  References:
+    Documents: references.html
+    Data Dictionary: data-dictionary.html
 
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
 # │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │
