@@ -24,6 +24,7 @@ This page maps the v0.1 minimum referral workflow to the IG artifacts used by th
 | EReferral Provenance | Audit and signature support | [StructureDefinition-ereferral-provenance.html](StructureDefinition-ereferral-provenance.html) |
 | EReferral MedicationAdministration | Optional clinical summary support | [StructureDefinition-ereferral-medication-administration.html](StructureDefinition-ereferral-medication-administration.html) |
 | ERefImmunization | Optional clinical summary support | [StructureDefinition-ereferral-immunization.html](StructureDefinition-ereferral-immunization.html) |
+| EReferral DiagnosticReport | Optional diagnostic report and attachment support | [StructureDefinition-ereferral-diagnostic-report.html](StructureDefinition-ereferral-diagnostic-report.html) |
 
 ## Example Coverage
 

@@ -112,12 +112,14 @@ Allowed resource types:
 - **Procedure** - Previous procedures relevant to referral
 - **MedicationAdministration** - Current medications
 - **Immunization** - Vaccination history
+- **DiagnosticReport** - Laboratory, imaging, pathology, or other diagnostic reports, including complete report attachments
 
 **Example:**
 ```fsh
 * supportingInfo[0] = Reference(Observation/BP-001)
 * supportingInfo[+] = Reference(Observation/ECG-001)
 * supportingInfo[+] = Reference(Condition/Diabetes-001)
+* supportingInfo[+] = Reference(DiagnosticReport/LabReport-001)
 ```
 
 ---
@@ -229,6 +231,7 @@ The EReferral ServiceRequest typically works with:
 | [Organization](http://hl7.org/fhir/R4/organization.html) | `performer` | Receiving facility |
 | [Condition](http://hl7.org/fhir/R4/condition.html) | `reasonReference`, `supportingInfo` | Clinical diagnoses |
 | [Observation](http://hl7.org/fhir/R4/observation.html) | `supportingInfo` | Vital signs, lab results |
+| [DiagnosticReport](StructureDefinition-ereferral-diagnostic-report.html) | `supportingInfo` | Diagnostic report summaries, structured results, and formatted report attachments |
 | [Task](http://hl7.org/fhir/R4/task.html) | `Task.focus` | Workflow tracking and receiving-facility response |
 | [Provenance](http://hl7.org/fhir/R4/provenance.html) | `relevantHistory` | Audit trail and signatures |
 | [Encounter](http://hl7.org/fhir/R4/encounter.html) | Context | Often linked via Encounter context |

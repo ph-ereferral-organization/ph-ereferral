@@ -87,13 +87,14 @@ Description: "Profile for ServiceRequest resource in the Philippine eReferral co
 
 
 // TDG Row REF-15: "Time Called" and other supporting clinical information
-// Clinical Summary elements: Conditions, Observations, Procedures, Medications, Immunizations
+// Clinical Summary elements: Conditions, Observations, Procedures, Medications,
+// Immunizations, and DiagnosticReports
 * supportingInfo MS
 * insert ObligationOptional
 
-* supportingInfo only Reference(PHCoreCondition or PHCoreObservation or PHCoreProcedure or PHCoreMedicationAdministration or PHCoreImmunization)
+* supportingInfo only Reference(PHCoreCondition or PHCoreObservation or PHCoreProcedure or PHCoreMedicationAdministration or PHCoreImmunization or ERefDiagnosticReport)
   * ^short = "Additional clinical information"
-  * ^definition = "Additional clinical information relevant to the referral, such as relevant conditions, procedures, medications, immunizations, or observations."
+  * ^definition = "Additional clinical information relevant to the referral, such as relevant conditions, procedures, medications, immunizations, observations, or diagnostic reports."
 
 // TDG Row REF-16: "Reason for Referral (service type)" - Classification of requested service
 * code MS
