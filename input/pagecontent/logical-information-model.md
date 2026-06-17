@@ -71,19 +71,24 @@ groups the v0.1 general referral elements into referral-package concepts so
 reviewers and implementers can discuss the dataset without starting from FHIR
 paths.
 
-Current draft mapping references include these v0.1 row clusters:
+Current draft mapping references include these v0.1 row clusters and gap
+annotations so missing row numbers are not read as accidental omissions:
 
 <!-- markdownlint-disable MD013 -->
 
 | Data dictionary area | Draft row references | Logical group |
 | -------------------- | -------------------- | ------------- |
 | Referring practitioner and role | REF-1, REF-2 | Sending context |
+| Signature and recorded activity | REF-3, REF-4 | Audit and provenance |
 | Initiating facility | REF-5 to REF-8 | Sending context |
 | Care navigator and receiving facility | REF-9 to REF-11 | Receiving context; workflow tracking |
+| Health Care Provider Network name | REF-12 | Sending context; receiving context; referral routing |
 | Referral date, category, priority, supporting information, and reason | REF-13 to REF-16 | Referral request; clinical reason; clinical context |
+| Receiving action points | REF-17, REF-18 | Workflow and response tracking |
+| Return referral slip attachment | REF-19 | Future work; attachment exchange |
+| Removed data dictionary row | REF-20 | Removed in current data dictionary |
 | Patient demographics and contact details | REF-21 to REF-30 | Patient identity |
 | Treatment given | REF-39 | Clinical context and prior care |
-| Signature and recorded activity | REF-3, REF-4 | Audit and provenance |
 
 <!-- markdownlint-enable MD013 -->
 
@@ -95,8 +100,8 @@ logical groups.
 
 ## eReferral Profile Relationships
 
-The diagram shows the current v0.2 draft PeReF profile relationships. It is not a
-complete catalogue of every future clinical profile that may be added for
+The diagram shows the current v0.2 draft PeReF profile relationships. It is
+not a complete catalogue of every future clinical profile that may be added for
 specialty or program-specific referral use cases.
 
 <!-- markdownlint-disable MD013 MD033 -->
@@ -137,7 +142,7 @@ from the diagram for readability.
 
 <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="flow-title flow-desc" width="100%" viewBox="0 0 1180 510" preserveAspectRatio="xMidYMin meet">
   <title id="flow-title">Example eReferral RESTful interaction flow</title>
-  <desc id="flow-desc">Sequence-style diagram showing a referring system creating referral resources, a FHIR server storing them, and a receiving system searching, reading, updating, and closing referral workflow resources.</desc>
+  <desc id="flow-desc">Sequence-style diagram showing a referring system (Initiating Facility) creating referral resources, a FHIR server storing them, and a receiving system (Receiving Facility) searching, reading, updating, and closing referral workflow resources.</desc>
   <defs>
     <style>
       .flow-head { fill: #eef4fb; stroke: #2f5f8f; stroke-width: 2; rx: 8; }
