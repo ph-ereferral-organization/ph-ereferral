@@ -100,14 +100,14 @@ logical groups.
 
 ## eReferral Profile Relationships
 
-The diagram shows the current v0.2 draft PeReF profile relationships. It is
+The diagram shows the current v0.3 draft PeReF profile relationships. It is
 not a complete catalogue of every future clinical profile that may be added for
 specialty or program-specific referral use cases.
 
 <!-- markdownlint-disable MD013 MD033 -->
 
 <img src="peref-fhir-relationship-diagram.png"
-     alt="PH eReferral FHIR Profile Relationship Diagram v0.2 (draft). ERefServiceRequest is the central resource, connected to ERefPractitionerRole (requester), PHCoreOrganization (performer), ERefPatient (subject), ERefTask (focus), ERefProvenance (relevantHistory), and ERefEncounter (basedOn). ServiceRequest.supportingInfo and reasonReference reference clinical summary resources: ERefObservation, ERefImmunization, ERefMedicationAdministration, PHCoreCondition, and PHCoreProcedure. ERefRelatedPerson links to ERefPatient."
+     alt="PH eReferral FHIR Profile Relationship Diagram v0.3 (draft). ERefServiceRequest is the central resource, connected to ERefPractitionerRole (requester), PHCoreOrganization (performer), ERefPatient (subject), ERefTask (focus), ERefProvenance (relevantHistory), and ERefEncounter (basedOn). ServiceRequest.supportingInfo and reasonReference reference clinical summary resources: ERefObservation, ERefImmunization, ERefMedicationAdministration, PHCoreCondition, and PHCoreProcedure. ERefRelatedPerson links to ERefPatient."
      style="max-width:100%;height:auto;" />
 
 <!-- markdownlint-enable MD013 MD033 -->
@@ -123,7 +123,8 @@ specialty or program-specific referral use cases.
 | Supporting clinical information to request | `ServiceRequest.supportingInfo` | Clinical observations, conditions, procedures, treatment, medications, or immunizations needed for handover. |
 | Workflow tracking to request | `Task.focus` | The Task tracking status, receiving response, assignment, and closure for the ServiceRequest. |
 | Audit record to request | `ServiceRequest.relevantHistory`; `Provenance.target` | The provenance record for signatures, submissions, and updates. |
-| Encounter to request | `Encounter.basedOn` | The encounter associated with acting on or closing the referral. |
+| ServiceRequest to Encounter | `ServiceRequest.encounter` | The encounter associated with acting on or closing the referral. |
+| Clinical Summary Resources to Encounter | `Condition.encounter`;  `Observation.encounter`; `Procedure.encounter`; `DiagnosticReport.encounter` | The encounter associated with the clinical summary resources. |
 
 <!-- markdownlint-enable MD013 -->
 
