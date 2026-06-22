@@ -30,6 +30,9 @@ Alias: $signature-type = urn:iso-astm:E1762-95:2013
 // RESTful security service codes
 Alias: $restful-security-service = http://terminology.hl7.org/CodeSystem/restful-security-service
 
+// CapabilityStatement expectation extension (AU Core / AU eReq pattern)
+Alias: $cs-expectation = http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation
+
 // Obligation extension
 Alias: $obligation = http://hl7.org/fhir/StructureDefinition/obligation
 
