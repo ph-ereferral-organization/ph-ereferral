@@ -136,7 +136,7 @@ specialty or program-specific referral use cases.
 The following flow is illustrative and non-normative. Do not treat it as a
 required API contract. Actual supported searches, update methods, transaction
 behavior, and security controls should be stated in the server
-CapabilityStatement and exchange agreement.
+[CapabilityStatement](CapabilityStatement-ExampleERefCapabilityStatement.html) and exchange agreement.
 
 Each interaction implies a corresponding FHIR REST response, such as `200 OK`,
 `201 Created`, or an `OperationOutcome`. Standard HTTP responses are omitted
@@ -203,7 +203,7 @@ from the diagram for readability.
 | Create or update shared reference data | `POST /Patient`, `PUT /Patient/{id}`, `POST /Organization`, `POST /PractitionerRole` | ERefPatient, Organization, Practitioner, PractitionerRole | Use existing records when available. Create or update only when the exchange agreement allows it. |
 | Create the referral request | `POST /ServiceRequest` | ERefServiceRequest | Carries patient, requester, receiving performer, requested service, urgency, reason, and supporting clinical references. |
 | Create workflow tracking | `POST /Task` | ERefTask | `Task.focus` points to the ServiceRequest. Initial v0.1 exchange normally starts with a requested Task. |
-| Read or search for referrals | `GET /Task?focus=ServiceRequest/{id}`, `GET /ServiceRequest?performer=Organization/{id}&status=active` | Task, ServiceRequest | These are example searches. Actual support belongs in the server CapabilityStatement. |
+| Read or search for referrals | `GET /Task?focus=ServiceRequest/{id}`, `GET /ServiceRequest?performer=Organization/{id}&status=active` | Task, ServiceRequest | These are example searches. Actual support belongs in the server [CapabilityStatement](CapabilityStatement-ExampleERefCapabilityStatement.html). |
 | Record receiving response | `PUT /Task/{id}` or `PATCH /Task/{id}` | ERefTask | Updates `Task.status`, `Task.businessStatus`, `Task.statusReason`, and/or `Task.output` depending on the response. |
 | Record onward referral | `POST /ServiceRequest`; `PUT/PATCH /Task/{id}` | ServiceRequest, Task | An onward ServiceRequest can use `ServiceRequest.replaces` to link back to the previous referral request. |
 | Record audit event or signature | `POST /Provenance` | ERefProvenance | Provenance can target the ServiceRequest and record signer, author, update, or other auditable activity. |
@@ -220,7 +220,7 @@ Reviewers should confirm:
 - the logical groups match clinical and operational expectations for v0.1;
 - the data dictionary row clusters are accurate;
 - the profile relationships are consistent with the current PeReF profiles;
-- REST interaction examples match the intended server CapabilityStatement;
+- REST interaction examples match the intended server [CapabilityStatement](CapabilityStatement-ExampleERefCapabilityStatement.html);
 - future use cases can extend clinical content without replacing the core
   referral envelope;
 - production topics such as routing, consent, security, attachments, and

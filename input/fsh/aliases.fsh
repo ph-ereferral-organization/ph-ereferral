@@ -27,6 +27,9 @@ Alias: $v3-DataOperation = http://terminology.hl7.org/CodeSystem/v3-DataOperatio
 Alias: $provenance-participant-type = http://terminology.hl7.org/CodeSystem/provenance-participant-type
 Alias: $signature-type = urn:iso-astm:E1762-95:2013
 
+// RESTful security service codes
+Alias: $restful-security-service = http://terminology.hl7.org/CodeSystem/restful-security-service
+
 // Obligation extension
 Alias: $obligation = http://hl7.org/fhir/StructureDefinition/obligation
 
