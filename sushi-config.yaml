@@ -79,12 +79,18 @@ menu:
   Home: index.html
   Guidance:
     WHO SMART L1 Basis: who-smart-l1.html
-    v0.1 Referral Workflow: referral-workflow.html
-    v0.1 Connectathon Readiness: connectathon-readiness.html
-    v0.1 Scope and Release Notes: v01-scope.html
-    v0.1 Coverage Map: coverage-map.html
-    v0.1 Decision Log: decision-log.html
+    Referral Workflow: referral-workflow.html
+    Logical Information Model: logical-information-model.html
+    Connectathon Readiness: connectathon-readiness.html
+    Scope and Release Notes: v01-scope.html
+    Coverage Map: coverage-map.html
+    Decision Log: decision-log.html
   Artifacts: artifacts.html
+  Sample Cases:
+    Ana Reyes Referral: sample-case-ana-reyes.html
+  References:
+    Documents: references.html
+    Data Dictionary: data-dictionary.html
 
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
 # │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │
@@ -185,6 +191,21 @@ menu:
 # * packageId
 
 language: en
+#
+# ╭──────────────────────────────────IG Publisher parameters───────────────────────────────────────╮
+# │  Parameters passed to the IG Publisher via ImplementationGuide.definition.parameter.           │
+# ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
+# special-url suppresses canonical URL mismatch errors for resources whose declared URL
+# intentionally differs from the IG's canonical base (https://fhir.doh.gov.ph/pheref).
+# CodeSystems PHCW/PSOC use phcore namespace per ontoserver tx.fhirlab.net (see issue #140).
+# ValueSet URLs have www. prefix + path mismatches pending ontoserver correction (see issue #140).
+parameters:
+  special-url:
+    - https://fhir.doh.gov.ph/phcore/CodeSystem/PHCW
+    - https://fhir.doh.gov.ph/phcore/CodeSystem/PSOC
+    - https://www.fhir.doh.gov.ph/pheref/ValueSet/practitioner-role
+    - https://www.fhir.doh.gov.ph/pheref/ValueSet/referral-category
+    - https://www.fhir.doh.gov.ph/pheref/ValueSet/reason-for-referral-service-type
 #
 # ╭──────────────────────────────────────────SUSHI flags───────────────────────────────────────────╮
 # │  The flags below configure aspects of how SUSHI processes FSH.                                 │

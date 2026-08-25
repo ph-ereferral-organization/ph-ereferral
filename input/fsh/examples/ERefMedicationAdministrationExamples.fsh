@@ -1,3 +1,6 @@
+// Supporting resources defined in ERefInitiatingFacilityBundle.fsh:
+//   - ExampleERefPatient
+
 Instance: ExampleERefMedicationAdministrationAntibiotic
 InstanceOf: ERefMedicationAdministration
 Usage: #example
@@ -7,37 +10,31 @@ Description: "Example IV antibiotic administration for a patient with suspected 
 * status = #completed
 * medicationReference = Reference(ExampleERefMedicationAntibiotic)
 * subject = Reference(ExampleERefPatient)
-* effectivePeriod.start = "2025-03-15T08:00:00+08:00"
-* effectivePeriod.end = "2025-03-15T08:30:00+08:00"
-* performer.actor = Reference(ExampleERefPractitioner)
+* effectivePeriod.start = "2026-06-18T08:00:00+08:00"
+* effectivePeriod.end = "2026-06-18T08:30:00+08:00"
+* performer.actor = Reference(ExampleERefPractitionerSubmission)
 * performer.function = $sct#158965000 "Medical practitioner"
 * dosage.site = $sct#49852007 "Structure of median cubital vein"
 * dosage.route = $sct#47625008 "Intravenous route"
 * dosage.dose = 750 'mg' "mg"
-* note.text = "Administered as part of pre-referral treatment for suspected sepsis. Patient to continue oral antibiotics at receiving facility."
+* note.text = "Administered as part of pre-referral treatment for suspected sepsis."
 
 Instance: ExampleERefMedicationAdministrationChronic
 InstanceOf: ERefMedicationAdministration
 Usage: #example
 Title: "Example Chronic Medication Administration"
-Description: "Example chronic medication administration (antihypertensive) demonstrating routine medication given to patient. Part of clinical summary (REF-15)."
+Description: "Example chronic medication administration (antihypertensive) demonstrating routine medication given to patient."
 
 * status = #completed
 * medicationReference = Reference(ExampleERefMedicationTwinact)
 * subject = Reference(ExampleERefPatient)
-* effectiveDateTime = "2025-03-15T07:00:00+08:00"
-* context = Reference(ExampleERefEncounter)
-* performer.actor = Reference(ExampleERefPractitioner)
+* effectiveDateTime = "2026-06-18T07:00:00+08:00"
+// context removed — ExampleERefEncounter does not exist yet. Can be restored when encounter example is created.
+* performer.actor = Reference(ExampleERefPractitionerSubmission)
 * performer.function = $sct#158965000 "Medical practitioner"
 * dosage.route = $sct#26643006 "Oral route"
 * dosage.dose = 1 '{tablet}' "tablet"
-* note.text = "Patient's regular morning antihypertensive medication given before referral. Patient has been compliant with daily dosing."
-
-// === SUPPORTING RESOURCES (Self-Contained) ===
-// Note: ExampleERefPatient, ExampleERefPractitioner, and ExampleERefEncounter are defined in separate files:
-// - input/fsh/examples/ExampleERefPatient.fsh
-// - input/fsh/examples/ExampleERefPractitioner.fsh
-// - input/fsh/examples/ExampleERefEncounter.fsh
+* note.text = "Patient's regular morning antihypertensive medication given before referral."
 
 Instance: ExampleERefMedicationAntibiotic
 InstanceOf: PHCoreMedication

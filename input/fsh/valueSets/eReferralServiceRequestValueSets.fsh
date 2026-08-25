@@ -1,39 +1,40 @@
-ValueSet: EReferralServiceCategory
-Id: ereferral-service-category
-Title: "eReferral Service Category"
-Description: "Categories of services that can be requested through eReferral"
-* ^status = #draft
-* ^experimental = true
-* $sct#108252007 "Laboratory procedure"
-* $sct#363679005 "Imaging"
-* $sct#409063005 "Counselling"
-* $sct#409073007 "Education"
-* $sct#387713003 "Surgical procedure"
+ValueSet: EReferralPractitionerRoleCode
+Id: vs-practitioner-role
+Title: "Practitioner Role VS"
+Description: "Designation of referring individual"
+* ^url = "https://www.fhir.doh.gov.ph/pheref/ValueSet/practitioner-role"
+* ^status = #active
+* $sct#158965000 "Doctor"
+* $sct#265937000 "Nurse"
+* $sct#309453006 "Midwife"
+* $sct#46255001 "Pharmacist"
+* $sct#386629007 "Medical Technologist"
+* $sct#159282002 "Laboratory Aide"
+* $sct#106289002 "Dentist"
+* $sct#4162009 "Dental Aide"
+* $sct#28229004 "Optometrist"
+* $phcore-psoc#3253 "Barangay Health Worker"
+* $phcore-phcw#PCW "Primary Care Worker"
 
-ValueSet: EReferralPriority
-Id: ereferral-priority
-Title: "eReferral Priority"
-Description: "Priority levels for eReferral requests. Uses standard FHIR RequestPriority values."
-* ^status = #draft
-* ^experimental = true
-* $request-priority#routine "Routine"
-* $request-priority#urgent "Urgent"
-* $request-priority#stat "STAT"
+ValueSet: EReferralServiceCategory
+Id: vs-referral-category
+Title: "Referral Category VS"
+Description: "Referral category (Emergency or Outpatient)"
+* ^url = "https://www.fhir.doh.gov.ph/pheref/ValueSet/referral-category"
+* ^status = #active
+* $sct#73770003 "Emergency"
+* $sct#440655000 "Outpatient"
 
 ValueSet: EReferralReason
-Id: ereferral-reason
-Title: "eReferral Reason"
-Description: "Clinical reasons for eReferral requests. Uses SNOMED CT clinical findings and diagnoses."
-* ^experimental = true
-* ^status = #draft
-* $sct#267036007 "Dyspnea"
-* $sct#29857009 "Chest pain"
-* $sct#414545008 "Suspected lung cancer"
-* $sct#42343007 "Congestive heart failure"
-* $sct#49436004 "Atrial fibrillation"
-* $sct#59621000 "Essential hypertension"
-* $sct#73211009 "Diabetes mellitus"
-* $sct#109006 "Anxiety disorder"
+Id: vs-reason-for-referral-service-type
+Title: "Reason for Referral (Service Type) VS"
+Description: "Reason for referral (Service type)"
+* ^url = "https://www.fhir.doh.gov.ph/pheref/ValueSet/reason-for-referral-service-type"
+* ^status = #active
+* $sct#11429006 "Consultation"
+* $sct#165197003 "Diagnostics"
+* $sct#71388002 "Procedure"
+* $sct#3457005 "Others"
 
 ValueSet: EReferralRelationshipType
 Id: ereferral-relationship-type

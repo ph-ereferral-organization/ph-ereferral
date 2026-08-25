@@ -15,10 +15,6 @@ Id: ereferral-practitioner-role
 Title: "PH eReferral PractitionerRole"
 Description: "Profile on PractitionerRole for the Philippines eReferral specification, extending PHCorePractitionerRole. This profile captures the role of the referring practitioner and care navigator within the eReferral workflow, linking practitioners to healthcare facilities."
 
-* ^status = #draft
-* ^jurisdiction = urn:iso:std:iso:3166#PH "Philippines"
-* ^purpose = "This profile defines the constraints for representing practitioner roles in the Philippines eReferral context."
-
 // Inherited from PHCorePractitionerRole:
 // - practitioner 1..1 MS (REF-1, REF-9) - already constrained to PHCorePractitioner
 // - organization 1..1 MS (REF-5, REF-6, REF-7, REF-8, REF-10, REF-11) - already constrained to PHCoreOrganization
@@ -26,8 +22,14 @@ Description: "Profile on PractitionerRole for the Philippines eReferral specific
 
 // eReferral-specific extension:
 // TDG REF-2: Practitioner Role - Must Support for eReferral workflow
-* code 1..* MS
-* insert ObligationRequired
+* code MS
+* code from EReferralPractitionerRoleCode (required)
+* code insert ObligationRequired
 
-* code ^short = "Role or designation of the practitioner"
-* code ^definition = "The designation or role of the practitioner (e.g., Midwife, District Nurse, District Medical Officer)."
+* practitioner MS
+* practitioner insert ObligationOptional
+* practitioner only Reference(PHCorePractitioner)
+
+* organization MS
+* organization insert ObligationOptional
+* organization only Reference(PHCoreOrganization)

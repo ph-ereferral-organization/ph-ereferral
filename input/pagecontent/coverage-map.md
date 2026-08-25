@@ -4,6 +4,8 @@ This page maps the v0.1 minimum referral workflow to the IG artifacts used by th
 
 ## Workflow Coverage
 
+<div class="ph-table" markdown="1">
+
 | Workflow step | Primary artifact | Supporting artifacts | Coverage status |
 |---------------|------------------|----------------------|-----------------|
 | Create referral | [Example eReferral ServiceRequest](ServiceRequest-ExampleERefServiceRequest.html) | [EReferral ServiceRequest](StructureDefinition-ereferral-service-request.html), patient, practitioner role, organizations, condition, and observations | Covered for the minimum test path. |
@@ -12,7 +14,11 @@ This page maps the v0.1 minimum referral workflow to the IG artifacts used by th
 | Respond with receiving outcome | [Example eReferral Task - Accepted State](Task-ExampleERefTaskAccepted.html) | Issue [#47](https://github.com/ph-ereferral-organization/ph-ereferral/issues/47) and PR [#84](https://github.com/ph-ereferral-organization/ph-ereferral/pull/84) | Partially covered. Positive response is represented by accepted in the current fixture set. Rejected and referred-onward responses are pending review. |
 | Close referral | [Example eReferral Task - Completed State](Task-ExampleERefTaskCompleted.html) | [Example eReferral Encounter](Encounter-ExampleERefEncounter.html) and Task output | Covered for completion of the minimum test path. |
 
+</div>
+
 ## Profile Coverage
+
+<div class="ph-table" markdown="1">
 
 | Profile | v0.1 test role | Link |
 |---------|----------------|------|
@@ -25,7 +31,11 @@ This page maps the v0.1 minimum referral workflow to the IG artifacts used by th
 | EReferral MedicationAdministration | Optional clinical summary support | [StructureDefinition-ereferral-medication-administration.html](StructureDefinition-ereferral-medication-administration.html) |
 | ERefImmunization | Optional clinical summary support | [StructureDefinition-ereferral-immunization.html](StructureDefinition-ereferral-immunization.html) |
 
+</div>
+
 ## Example Coverage
+
+<div class="ph-table" markdown="1">
 
 | Example group | Required for minimum path | Notes |
 |---------------|---------------------------|-------|
@@ -36,6 +46,8 @@ This page maps the v0.1 minimum referral workflow to the IG artifacts used by th
 | Encounter | Yes | Close step context. |
 | Provenance | Optional | Audit trail and signature support. |
 | MedicationAdministration and Immunization | Optional | Additional clinical summary examples. |
+
+</div>
 
 ## Gaps and Deferred Coverage
 

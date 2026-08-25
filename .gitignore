@@ -9,3 +9,9 @@ Thumbs.db
 .vscode/settings.json
 .gitignore
 /mcp folder
+.ignore
+obligation-systematic-review.md
+\[TDG Internal] FHIR Mapping v0.1 - \[CLEAN 20260605] Synchronous TDG FHIR Mapping.csv
+download.txt
+mermaid.md
+TDG FHIR Mapping.csv

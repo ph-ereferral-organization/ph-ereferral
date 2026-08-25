@@ -4,8 +4,7 @@ Id: ereferral-observation
 Title: "EReferral Observation"
 Description: "Profile for clinical observations in the Philippine eReferral context. 
 Supports vital signs, laboratory results, and clinical measurements included in 
-referral clinical summaries. Referenced via ServiceRequest.supportingInfo and 
-ServiceRequest.reasonReference."
+referral clinical summaries. Linked to the encounter via Observation.encounter."
 
 // =============================================================================
 // TDG MAPPING CITATIONS - Clinical Information Group (07)
@@ -14,29 +13,29 @@ ServiceRequest.reasonReference."
 //   - FHIR Profile: Observation | Condition
 //   - Maps to: ServiceRequest.reasonReference or Condition.code
 //
-// TDG Row REF-33: "Vital Signs – Blood Pressure" -> ServiceRequest.supportingInfo
+// TDG Row REF-33: "Vital Signs – Blood Pressure" -> Observation.encounter
 //   - FHIR Profile: PH Core Observation
-//   - Maps to: ServiceRequest.supportingInfo, Observation.value[x]
+//   - Maps to: Observation.encounter, Observation.value[x]
 //
-// TDG Row REF-34: "Vital Signs – Heart Rate" -> ServiceRequest.supportingInfo
+// TDG Row REF-34: "Vital Signs – Heart Rate" -> Observation.encounter
 //   - FHIR Profile: PH Core Observation
-//   - Maps to: ServiceRequest.supportingInfo, Observation.value[x]
+//   - Maps to: Observation.encounter, Observation.value[x]
 //
-// TDG Row REF-35: "Vital Signs – Respiratory Rate" -> ServiceRequest.supportingInfo
+// TDG Row REF-35: "Vital Signs – Respiratory Rate" -> Observation.encounter
 //   - FHIR Profile: PH Core Observation
-//   - Maps to: ServiceRequest.supportingInfo, Observation.value[x]
+//   - Maps to: Observation.encounter, Observation.value[x]
 //
-// TDG Row REF-36: "Vital Signs – Oxygen Saturation" -> ServiceRequest.supportingInfo
+// TDG Row REF-36: "Vital Signs – Oxygen Saturation" -> Observation.encounter
 //   - FHIR Profile: PH Core Observation
-//   - Maps to: ServiceRequest.supportingInfo, Observation.value[x]
+//   - Maps to: Observation.encounter, Observation.value[x]
 //
-// TDG Row REF-37: "Vital Signs – Temperature" -> ServiceRequest.supportingInfo
+// TDG Row REF-37: "Vital Signs – Temperature" -> Observation.encounter
 //   - FHIR Profile: PH Core Observation
-//   - Maps to: ServiceRequest.supportingInfo, Observation.value[x]
+//   - Maps to: Observation.encounter, Observation.value[x]
 //
-// TDG Row REF-38: "Vital Signs – Weight" -> ServiceRequest.supportingInfo
+// TDG Row REF-38: "Vital Signs – Weight" -> Observation.encounter
 //   - FHIR Profile: PH Core Observation
-//   - Maps to: ServiceRequest.supportingInfo, Observation.value[x]
+//   - Maps to: Observation.encounter, Observation.value[x]
 //
 // All TDG rows: Clinical Group = "07 Clinical Information"
 // Required?: No (for TDG), but Must Support for eReferral interoperability
@@ -49,20 +48,38 @@ ServiceRequest.reasonReference."
 // - value[x]: 0..1 MS (valueCodeableConcept slice in PH Core)
 // - interpretation: 0..* MS (in PH Core)
 
-// TDG Row REF-33 to REF-38: eReferral requires at least one category 
-// for clinical context classification (vital-signs, laboratory, survey, procedure)
+// -----------------------------------------------------------------------------
+// TDG Row REF-33 to REF-38: eReferral requires at least one category
+// for clinical context classification (vital-signs, laboratory, survey, procedure).
+// Reference: http://hl7.org/fhir/valueset-observation-category.html
+// -----------------------------------------------------------------------------
 * category MS
-* insert ObligationOptional
+* category insert ObligationOptional
 
-// * category ObligationOptional
-
-// TDG Row REF-31, REF-33-38: Subject required for all clinical observations
-// Constrained to ERefPatient for eReferral context (not Group, Device, or Location)
+// -----------------------------------------------------------------------------
+// TDG Row REF-31, REF-33-38: Subject required for all clinical observations.
+// Constrained to ERefPatient for eReferral context (not Group, Device, or Location).
+// -----------------------------------------------------------------------------
 * subject MS
-* insert ObligationOptional
-
-// * subject ObligationOptional
+* subject insert ObligationOptional
 * subject only Reference(ERefPatient)
+
+// -----------------------------------------------------------------------------
+// DECISION LOG: encounter marked Must Support
+//
+// Rationale: The Observation.encounter element is NOT explicitly listed in
+// the TDG sheet, but is marked Must Support to enable downstream systems to
+// (1) search for observations by encounter (Observation?encounter=X),
+// (2) group all clinical data associated with a referral encounter, and
+// (3) support modular subscriptions/filters on observation bundles.
+//
+// This is consistent with the eReferral principle of profiling for
+// interoperability beyond the minimum TDG row set.
+// Reference: https://fhir.doh.gov.ph/pheref
+// -----------------------------------------------------------------------------
+* encounter MS
+* encounter insert ObligationOptional
+* encounter only Reference(ERefEncounter)
 
 // =============================================================================
 // SELF-REFERENCING ELEMENTS - R4 Observation

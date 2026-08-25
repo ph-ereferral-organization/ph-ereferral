@@ -84,32 +84,15 @@ Instead, this page provides the narrative basis that later work can refine into 
 
 The PH eReferral IG should treat this L1 page as the narrative foundation for downstream work.
 
-<table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc; margin: 1em 0;">
-  <thead>
-    <tr style="background-color: #f5f5f5;">
-      <th style="text-align: left; padding: 6px 10px; border: 1px solid #ccc; font-weight: bold;">SMART level</th>
-      <th style="text-align: left; padding: 6px 10px; border: 1px solid #ccc; font-weight: bold;">Role in this project</th>
-      <th style="text-align: left; padding: 6px 10px; border: 1px solid #ccc; font-weight: bold;">Expected output in PH eReferral work</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left; padding: 6px 10px; border: 1px solid #ccc; font-weight: bold;">L1 Narrative guidance</td>
-      <td style="text-align: left; padding: 6px 10px; border: 1px solid #ccc;">Describes the policy, service-delivery, and guideline basis for the use case</td>
-      <td style="text-align: left; padding: 6px 10px; border: 1px solid #ccc;">This page and linked source references</td>
-    </tr>
-    <tr style="background-color: #fafafa;">
-      <td style="text-align: left; padding: 6px 10px; border: 1px solid #ccc; font-weight: bold;">L2 DAK / structured requirements</td>
-      <td style="text-align: left; padding: 6px 10px; border: 1px solid #ccc;">Converts narrative guidance into operational and structured requirements</td>
-      <td style="text-align: left; padding: 6px 10px; border: 1px solid #ccc;">Business processes, actors, data needs, rules, and other structured artefacts</td>
-    </tr>
-    <tr>
-      <td style="text-align: left; padding: 6px 10px; border: 1px solid #ccc; font-weight: bold;">L3 FHIR IG / technical implementation</td>
-      <td style="text-align: left; padding: 6px 10px; border: 1px solid #ccc;">Expresses computable and testable implementation content</td>
-      <td style="text-align: left; padding: 6px 10px; border: 1px solid #ccc;">FHIR profiles, examples, terminology bindings, interactions, and validation-ready guidance</td>
-    </tr>
-  </tbody>
-</table>
+<div class="ph-table" markdown="1">
+
+| SMART level | Role in this project | Expected output in PH eReferral work |
+|-------------|----------------------|--------------------------------------|
+| **L1 Narrative guidance** | Describes the policy, service-delivery, and guideline basis for the use case | This page and linked source references |
+| **L2 DAK / structured requirements** | Converts narrative guidance into operational and structured requirements | Business processes, actors, data needs, rules, and other structured artefacts |
+| **L3 FHIR IG / technical implementation** | Expresses computable and testable implementation content | FHIR profiles, examples, terminology bindings, interactions, and validation-ready guidance |
+
+</div>
 
 This separation matters. The PH eReferral IG should not collapse L1, L2, and L3 into one page or one type of artefact. Each layer serves a different purpose and should remain traceable to the layer above it.
 

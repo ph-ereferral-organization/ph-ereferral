@@ -33,6 +33,7 @@ The RelatedPerson resource is optional in an eReferral exchange. Systems may use
 | `gender` | 0..1 | Administrative gender |
 | `birthDate` | 0..1 | Date of birth |
 | `period` | 0..1 | Relationship validity period |
+{:.ph-table}
 
 #### Examples
 

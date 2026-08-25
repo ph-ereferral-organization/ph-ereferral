@@ -1,0 +1,23 @@
+name: Auto-assign PR author
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    if: |
+      (github.event.pull_request.author_association == 'MEMBER' ||
+       github.event.pull_request.author_association == 'OWNER')
+      && github.event.pull_request.user.type != 'Bot'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Assign PR to author
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} \
+            --add-assignee ${{ github.event.pull_request.user.login }} \
+            --repo ${{ github.repository }}

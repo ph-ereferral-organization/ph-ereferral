@@ -30,6 +30,7 @@ The `requester` element uses a **PractitionerRole** reference to capture:
 | REF-6 | Initiating Facility NHFR Code | `requester` (via PractitionerRole's Organization.identifier) |
 | REF-7 | Initiating Facility Address | `requester` (via PractitionerRole's Organization.address) |
 | REF-8 | Initiating Facility Contact Number | `requester` (via PractitionerRole's Organization.telecom) |
+{:.ph-table}
 
 **Example:**
 ```fsh
@@ -46,6 +47,7 @@ The `performer` element identifies where the service should be performed:
 | REF-9 | Care Navigator | `performer` (via PractitionerRole on receiving side) |
 | REF-10 | Receiving Facility Name | `performer` -> PractitionerRole.organization.display |
 | REF-11 | Receiving Facility NHFR Code | `performer` -> PractitionerRole.organization.identifier |
+{:.ph-table}
 
 **Example:**
 ```fsh
@@ -62,6 +64,7 @@ The profile uses value sets to standardize categorization:
 | `category` | [EReferralServiceCategory](ValueSet-ereferral-service-category.html) | Extensible | Type of service (imaging, laboratory, surgical, etc.) |
 | `priority` | [EReferralPriority](ValueSet-ereferral-priority.html) | Required | Urgency level: routine, urgent, or stat |
 | `intent` | Fixed value | N/A | Always `#order` for referrals |
+{:.ph-table}
 
 **Example:**
 ```fsh
@@ -78,6 +81,7 @@ The profile supports both coded and free-text reasons:
 |---------|--------------|-----------|
 | REF-16 | Reason for Referral (service type) | `code` |
 | REF-16 | Reason for Referral (clinical) | `reasonCode`, `reasonReference` |
+{:.ph-table}
 
 The `reasonCode` element is bound to the [EReferralReason](ValueSet-ereferral-reason.html) value set (example binding), which includes common SNOMED CT clinical findings such as:
 
@@ -105,6 +109,7 @@ The `supportingInfo` element allows attaching relevant clinical data:
 | TDG Row | Data Element | FHIR Path |
 |---------|--------------|-----------|
 | REF-15 | Clinical Summary | `supportingInfo` |
+{:.ph-table}
 
 Allowed resource types:
 - **Condition** - Diagnoses and clinical problems
@@ -145,6 +150,7 @@ The following elements are marked as **Must Support** and must be implemented by
 | `status` | 0..1 | Referral status |
 | `note` | 0..* | Additional instructions |
 | `requisition` | 0..1 | Referral identifier |
+{:.ph-table}
 
 ---
 
@@ -155,6 +161,7 @@ The profile includes the following validation rule:
 | Invariant | Severity | Expression | Description |
 |-----------|----------|------------|-------------|
 | `ereferral-requester-has-role` | Warning | `requester.resolve().ofType(PractitionerRole).exists() implies requester.resolve().ofType(PractitionerRole).organization.exists()` | If using PractitionerRole, facility information should be available |
+{:.ph-table}
 
 ---
 
@@ -171,6 +178,7 @@ The `ServiceRequest.status` element tracks the request lifecycle. Receiving-faci
 | `completed` | Service has been rendered |
 | `entered-in-error` | Referral created in error |
 | `unknown` | Status cannot be determined |
+{:.ph-table}
 
 ---
 
@@ -232,6 +240,7 @@ The EReferral ServiceRequest typically works with:
 | [Task](http://hl7.org/fhir/R4/task.html) | `Task.focus` | Workflow tracking and receiving-facility response |
 | [Provenance](http://hl7.org/fhir/R4/provenance.html) | `relevantHistory` | Audit trail and signatures |
 | [Encounter](http://hl7.org/fhir/R4/encounter.html) | Context | Often linked via Encounter context |
+{:.ph-table}
 
 ---
 
@@ -244,6 +253,7 @@ Implementers should use the following identifier systems for Philippine healthca
 | Philippine Health Insurance (PhilHealth) | `urn:oid:2.16.840.1.113883.2.9.4.3.2` | Patient PhilHealth ID |
 | Professional Regulation Commission (PRC) | `urn:oid:2.16.840.1.113883.2.9.4.3.3` | Practitioner license |
 | National Health Facility Registry (NHFR) | `urn:oid:2.16.840.1.113883.2.9.4.1.1` | Facility identifier |
+{:.ph-table}
 
 ---
 
@@ -256,6 +266,7 @@ This profile uses the following value sets defined for eReferral:
 | [EReferralServiceCategory](ValueSet-ereferral-service-category.html) | Categories of referral services |
 | [EReferralPriority](ValueSet-ereferral-priority.html) | Priority levels for referrals |
 | [EReferralReason](ValueSet-ereferral-reason.html) | Clinical reasons for referral |
+{:.ph-table}
 
 ---
 

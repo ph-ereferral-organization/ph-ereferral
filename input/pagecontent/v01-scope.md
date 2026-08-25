@@ -10,6 +10,8 @@ v0.1 is a draft testing baseline. It is not a production deployment specificatio
 
 ## In-Scope Artifacts
 
+<div class="ph-table" markdown="1">
+
 | Artifact type | In-scope v0.1 content |
 |---------------|-----------------------|
 | Core referral request | [EReferral ServiceRequest](StructureDefinition-ereferral-service-request.html) |
@@ -23,7 +25,11 @@ v0.1 is a draft testing baseline. It is not a production deployment specificatio
 | Referral terminology | [eReferral Service Category](ValueSet-ereferral-service-category.html), [eReferral Priority](ValueSet-ereferral-priority.html), and [eReferral Reason](ValueSet-ereferral-reason.html) |
 | Test fixtures | Required and optional examples listed in the [connectathon readiness guide](connectathon-readiness.html). |
 
+</div>
+
 ## Out of Scope or Deferred
+
+<div class="ph-table" markdown="1">
 
 | Deferred item | Current v0.1 handling |
 |---------------|-----------------------|
@@ -35,11 +41,17 @@ v0.1 is a draft testing baseline. It is not a production deployment specificatio
 | Attachment exchange and security workflow | Outside the current v0.1 by-hand test. |
 | Operational facility directory and HCPN routing | Not fully specified in this v0.1 test pack. |
 
+</div>
+
 ## Change Log
+
+<div class="ph-table" markdown="1">
 
 | Version or build | Status | Notes |
 |------------------|--------|-------|
 | `0.1.0` / `ci-build` | Draft | Initial connectathon readiness baseline with build instructions, by-hand test path, fixture list, known limitations, and release-readiness references. |
+
+</div>
 
 ## Release Tag
 

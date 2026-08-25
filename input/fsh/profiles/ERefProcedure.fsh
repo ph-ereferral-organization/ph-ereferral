@@ -4,27 +4,14 @@ Id: ereferral-procedure
 Title: "EReferral Procedure"
 Description: "Procedure profile for procedures performed or documented as part of the clinical context of a Philippine eReferral."
 
-* status MS
-
-* category MS
-
-* code MS
-
 * subject MS
+* subject insert ObligationOptional
 * subject only Reference(ERefPatient)
 
 * encounter MS
+* encounter insert ObligationOptional
 * encounter only Reference(ERefEncounter)
 
-* performed[x] MS
-
-* performer MS
-
-* performer.actor MS
-
-* reasonCode MS
-
-* reasonReference MS
-* reasonReference only Reference(PHCoreCondition or PHCoreObservation or ERefProcedure)
+* reasonReference only Reference(ERefCondition or ERefObservation or ERefProcedure)
 
 * note MS
